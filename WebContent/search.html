@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" lang="JavaScript">
+	function fsumit() {
+		if (searchForm.rcond[0].checked) {
+			searchForm.action = "list?cond=all"
+		} else if (searchForm.rcond[0].checked) {
+			searchForm.action = "list?cond=precision"
+		} else {
+			searchForm.action = "list?cond=keyword"
+		}
+	}
+
+	function hideall() {
+		if (searchForm.rcond[0].checked) {
+			pre.style.display = "none"
+			key.style.display = "none"
+		}
+	}
+
+	function showpre() {
+		if (searchForm.rcond[1].checked) {
+			pre.style.display = ""
+			key.style.display = "none"
+		} else {
+			pre.style.display = "none"
+		}
+	}
+
+	function showkey() {
+		if (searchForm.rcond[2].checked) {
+			key.style.display = ""
+			pre.style.display = "none"
+		} else {
+			key.style.display = "none"
+		}
+	}
+</script>
+</head>
+<body>
+	<form name="searchForm" action="" method="post" onclick="fsumit()">
+
+		<input type="radio" name="rcond" onclick="hideall()"> 查看所有图书
+		<p>
+			<input type="radio" name="rcond" onclick="showpre()"> 精确搜索
+		<p>
+		<table id=pre style="DISPLAY: none">
+			<tr>
+				<td>书名：</td>
+				<td><input type="text" name="title"></td>
+			</tr>
+			<tr>
+				<td>作者：</td>
+				<td><input type="text" name="author"></td>
+			</tr>
+			<tr>
+				<td>出版社：</td>
+				<td><input type="text" name="bookconcern"></td>
+			</tr>
+		</table>
+		<p>
+
+			<input type="radio" name="rcond" onclick="showkey()"> 关键字搜索
+		<p>
+		<table id=key style="display: none">
+			<tr>
+				<td>请输入关键字：</td>
+				<td><input type="text" name="keyword"></td>
+			</tr>
+		</table>
+		<p>
+			<input type="reset" value="重新输入"> <input type="submit"
+				value="搜索">
+	</form>
+</body>
+</html>
