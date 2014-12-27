@@ -159,6 +159,16 @@
 		<servlet-name>CreateAccountServlet</servlet-name>
 		<url-pattern>/account</url-pattern>
 	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>StockServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.StockServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>StockServlet</servlet-name>
+		<url-pattern>/stock</url-pattern>
+	</servlet-mapping>
 
 
 </web-app>

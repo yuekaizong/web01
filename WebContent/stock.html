@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" lang="JavaScript">
+	function fsumit() {
+		if (searchForm.rcond[0].checked) {
+			var flag = "minuteDo";
+			var symbol = searchForm.minute_symbol.value;
+			var time_start = searchForm.minute_timestart.value;
+			var time_end = searchForm.minute_timeend.value;
+			var action = "stock?flag="+flag+"&symbol=" + symbol + "&timestart="
+					+ time_start + "&timeend="+time_end;
+			searchForm.action = action;
+			//searchForm.action = symbol;
+		} else if (searchForm.rcond[1].checked) {
+			var flag = "klineDo";
+			var symbol = searchForm.kline_symbol.value;
+			var time_start = searchForm.kline_timestart.value;
+			var time_end = searchForm.kline_timeend.value;
+			var action = "stock?flag="+flag+"&symbol=" + symbol + "&timestart="
+					+ time_start + "&timeend="+time_end;
+			searchForm.action = action;
+		} else {
+			searchForm.action = "stock?cond=keyword"
+		}
+	}
+
+	function hideall() {
+		if (searchForm.rcond[0].checked) {
+			minute.style.display = "none"
+			kline.style.display = "none"
+			key.style.display = "none"
+		}
+	}
+
+	function showminute() {
+		if (searchForm.rcond[0].checked) {
+			minute.style.display = ""
+			kline.style.display = "none"
+		} else {
+			minute.style.display = "none"
+		}
+	}
+
+	function showkline() {
+		if (searchForm.rcond[1].checked) {
+			minute.style.display = "none"
+			kline.style.display = ""
+		} else {
+			kline.style.display = "none"
+		}
+	}
+
+	function showkey() {
+		if (searchForm.rcond[2].checked) {
+			kline.style.display = "none"
+			minute.style.display = "none"
+			key.style.display = ""
+		} else {
+			key.style.display = "none"
+		}
+	}
+</script>
+</head>
+<body>
+	<form name="searchForm" action="" method="post" onclick="fsumit()">
+
+		<input type="radio" name="rcond" onclick="showminute()"> 分时数据
+		<table id=minute style="DISPLAY: none">
+			<tr>
+				<td>股票代码：</td>
+				<td><input type="text" name="minute_symbol"></td>
+			</tr>
+			<tr>
+				<td>开始时间：</td>
+				<td><input type="text" name="minute_timestart"></td>
+			</tr>
+			<tr>
+				<td>最新时间：</td>
+				<td><input type="text" name="minute_timeend"></td>
+			</tr>
+		</table>
+		<p>
+			<input type="radio" name="rcond" onclick="showkline()"> K线数据
+
+		
+		<p>
+		<table id=kline style="DISPLAY: none">
+			<tr>
+				<td>股票代码：</td>
+				<td><input type="text" name="kline_symbol"></td>
+			</tr>
+			<tr>
+				<td>开始时间：</td>
+				<td><input type="text" name="kline_timestart"></td>
+			</tr>
+			<tr>
+				<td>最新时间：</td>
+				<td><input type="text" name="kline_timeend"></td>
+			</tr>
+		</table>
+		<p>
+
+			<input type="radio" name="rcond" onclick="showkey()"> 关键字搜索
+		<p>
+		<table id=key style="display: none">
+			<tr>
+				<td>请输入关键字：</td>
+				<td><input type="text" name="keyword"></td>
+			</tr>
+		</table>
+		<p>
+			<input type="reset" value="重新输入"> <input type="submit"
+				value="搜索">
+	</form>
+</body>
+</html>
