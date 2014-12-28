@@ -56,6 +56,8 @@ public class MinuteDO extends StockDo {
 
         bodyjson.put(StockDo.NAME, obj.name);
         bodyjson.put(StockDo.SYMBOL, obj.symbol);
+        bodyjson.put(StockDo.TIMESTART, obj.timestart);
+        bodyjson.put(StockDo.TIMEEND, obj.timeend);
 
         JSONObject entityjson = new JSONObject();
         bodyjson.put(StockDo.ATTR, entityjson);

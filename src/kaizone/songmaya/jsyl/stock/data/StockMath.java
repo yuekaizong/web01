@@ -243,9 +243,13 @@ public class StockMath {
                 }
                 float mean_zhang = sum_zhang / i;
                 float menu_die = sum_die / i;
-                rsi6 = (mean_zhang / (mean_zhang + menu_die)) * 100;
-                rsi12 = (mean_zhang / (mean_zhang + menu_die)) * 100;
-                rsi24 = (mean_zhang / (mean_zhang + menu_die)) * 100;
+                float base = mean_zhang + menu_die;
+                if(base == 0){
+                	base = 1;
+                }
+                rsi6 = (mean_zhang / base) * 100;
+                rsi12 = (mean_zhang / base) * 100;
+                rsi24 = (mean_zhang / base) * 100;
             }//
 
             if (i > 6) {
