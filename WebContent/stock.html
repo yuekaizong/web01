@@ -10,8 +10,8 @@
 			var symbol = searchForm.minute_symbol.value;
 			var time_start = searchForm.minute_timestart.value;
 			var time_end = searchForm.minute_timeend.value;
-			var action = "stock?flag="+flag+"&symbol=" + symbol + "&timestart="
-					+ time_start + "&timeend="+time_end;
+			var action = "stock?flag=" + flag + "&symbol=" + symbol
+					+ "&timestart=" + time_start + "&timeend=" + time_end;
 			searchForm.action = action;
 			//searchForm.action = symbol;
 		} else if (searchForm.rcond[1].checked) {
@@ -19,8 +19,20 @@
 			var symbol = searchForm.kline_symbol.value;
 			var time_start = searchForm.kline_timestart.value;
 			var time_end = searchForm.kline_timeend.value;
-			var action = "stock?flag="+flag+"&symbol=" + symbol + "&timestart="
-					+ time_start + "&timeend="+time_end;
+			var k = searchForm.kline_k.checked;
+			var macd = searchForm.kline_macd.checked;
+			var dmi = searchForm.kline_dmi.checked;
+			var wr = searchForm.kline_wr.checked;
+			var boll = searchForm.kline_boll.checked;
+			var kdj = searchForm.kline_kdj.checked;
+			var obv = searchForm.kline_obv.checked;
+			var rsi = searchForm.kline_rsi.checked;
+			var action = "stock?flag=" + flag + "&symbol=" + symbol
+					+ "&timestart=" + time_start + "&timeend=" + time_end
+					+ "&macd=" + macd + "&dmi=" + dmi + "&wr=" + wr + "&boll="
+					+ boll + "&kdj=" + kdj + "&obv=" + obv + "&rsi=" + rsi
+					+ "&k=" + k;
+
 			searchForm.action = action;
 		} else {
 			searchForm.action = "stock?cond=keyword"
@@ -99,6 +111,38 @@
 			<tr>
 				<td>最新时间：</td>
 				<td><input type="text" name="kline_timeend"></td>
+			</tr>
+			<tr>
+				<td>K：</td>
+				<td><input type="checkbox" checked="checked" name="kline_k"></td>
+			</tr>
+			<tr>
+				<td>MACD：</td>
+				<td><input type="checkbox" name="kline_macd"></td>
+			</tr>
+			<tr>
+				<td>DMI：</td>
+				<td><input type="checkbox" name="kline_dmi"></td>
+			</tr>
+			<tr>
+				<td>WR：</td>
+				<td><input type="checkbox" name="kline_wr"></td>
+			</tr>
+			<tr>
+				<td>BOLL：</td>
+				<td><input type="checkbox" name="kline_boll"></td>
+			</tr>
+			<tr>
+				<td>KDJ：</td>
+				<td><input type="checkbox" name="kline_kdj"></td>
+			</tr>
+			<tr>
+				<td>OBV：</td>
+				<td><input type="checkbox" name="kline_obv"></td>
+			</tr>
+			<tr>
+				<td>RSI：</td>
+				<td><input type="checkbox" name="kline_rsi"></td>
 			</tr>
 		</table>
 		<p>

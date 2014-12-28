@@ -14,45 +14,44 @@ import kaizone.songmaya.jsyl.stock.data.MinuteDO;
 
 import org.json.JSONObject;
 
-public class StockServlet extends HttpServlet{
-	
-	public static final String FLAG ="flag";
-	public static final String MINUTEDO ="minuteDo";
-	public static final String KLINEDO ="klineDo";
-	public static final String SYMBOL ="symbol";
-	public static final String TIMESTART ="timestart";
-	public static final String TIMEEND ="timeend";
-	
+public class StockServlet extends HttpServlet {
+
+	public static final String FLAG = "flag";
+	public static final String MINUTEDO = "minuteDo";
+	public static final String KLINEDO = "klineDo";
+	public static final String SYMBOL = "symbol";
+	public static final String TIMESTART = "timestart";
+	public static final String TIMEEND = "timeend";
+
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		resp.setContentType("text/html; charset=utf-8");
 		String flag = req.getParameter(FLAG);
-		if(MINUTEDO.equals(flag)){
+		if (MINUTEDO.equals(flag)) {
 			doMinute(req, resp);
-		}
-		else if(KLINEDO.equals(flag)){
+		} else if (KLINEDO.equals(flag)) {
 			doKline(req, resp);
 		}
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		doGet(req, resp);
 	}
-	
-	public void doMinute(HttpServletRequest req, HttpServletResponse resp){
+
+	public void doMinute(HttpServletRequest req, HttpServletResponse resp) {
 		String symbol = req.getParameter(SYMBOL);
 		String timestart = req.getParameter(TIMESTART);
 		String timeend = req.getParameter(TIMEEND);
-		MinuteDO minuteDO  = MinuteDO.produce(symbol, timestart, timeend);
+		MinuteDO minuteDO = MinuteDO.produce(symbol, timestart, timeend);
 		JSONObject jsonObject = null;
 		try {
 			jsonObject = MinuteDO.convertJson(minuteDO);
@@ -62,12 +61,23 @@ public class StockServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 	}
-	
-	public void doKline(HttpServletRequest req, HttpServletResponse resp){
+
+	public void doKline(HttpServletRequest req, HttpServletResponse resp) {
 		String symbol = req.getParameter(SYMBOL);
 		String timestart = req.getParameter(TIMESTART);
 		String timeend = req.getParameter(TIMEEND);
-		KDo result  = KDo.produce(symbol, timestart, timeend);
+
+		boolean khas = Boolean.valueOf(req.getParameter("k"));
+		boolean macdhas = Boolean.valueOf(req.getParameter("macd"));
+		boolean dmihas = Boolean.valueOf(req.getParameter("dmi"));
+		boolean wrhas = Boolean.valueOf(req.getParameter("wr"));
+		boolean bollhas = Boolean.valueOf(req.getParameter("boll"));
+		boolean kdjhas = Boolean.valueOf(req.getParameter("kdj"));
+		boolean obvhas = Boolean.valueOf(req.getParameter("obv"));
+		boolean rsihas = Boolean.valueOf(req.getParameter("rsi"));
+
+		KDo result = KDo.produce(symbol, timestart, timeend, khas, macdhas,
+				dmihas, wrhas, bollhas, kdjhas, obvhas, rsihas);
 		JSONObject jsonObject = null;
 		try {
 			jsonObject = KDo.convertJson(result);
@@ -77,6 +87,5 @@ public class StockServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 	}
-	
 
 }
