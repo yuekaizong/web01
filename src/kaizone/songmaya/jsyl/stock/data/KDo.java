@@ -513,7 +513,7 @@ public class KDo extends StockDo {
 			boolean bollhas, boolean kdjhas, boolean obvhas, boolean rsihas) {
 		KDo kDo = new KDo();
 
-		final int count = 5;
+		final int count = 220;
 
 		KEntity[] tmp_data = new KEntity[count];
 

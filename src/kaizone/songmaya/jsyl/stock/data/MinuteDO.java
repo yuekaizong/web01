@@ -214,7 +214,7 @@ public class MinuteDO extends StockDo {
     }
 
     public static MinuteDO produce(String symbol, String timestart, String timeend) {
-        int count = 5;
+        int count = 220;
         MinuteDO mDo = new MinuteDO();
 
         float price = 10.37f;
