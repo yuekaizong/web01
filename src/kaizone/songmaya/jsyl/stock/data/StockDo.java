@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public class StockDo extends JSONResponse{
 
-	public static final String SYMBOL = "symbol ";  //股票代码
+	public static final String SYMBOL = "symbol";  //股票代码
 	public static final String NAME = "name";
 	public static final String ATTR = "attr";
 	public static final String FLAG = "flag";

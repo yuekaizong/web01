@@ -9,8 +9,7 @@ import org.json.JSONObject;
 
 public class KDo extends StockDo {
 
-	public static final String FLAG = "kDo";
-	public static final String K = "K";
+	public static final String FLAG = "klineDo";
 	public static final String TIME = "time";
 	public static final String KAI = "kai";
 	public static final String GAO = "gao";
@@ -47,19 +46,33 @@ public class KDo extends StockDo {
 	public static final String RSI12 = "rsi12";
 	public static final String RSI24 = "rsi24";
 
-	// public static final String K = "k";
-	public static final String D = "d";
-	public static final String J = "j";
+    public static final String K = "k";
+    public static final String D = "d";
+    public static final String J = "j";
+    
+    public static final String TYPE = "type";
+    public static final String FUQUAN = "fuquan";
 
-	public KEntity[] karray;
+    public static final int TYPE_K_DAY = 0;
+    public static final int TYPE_K_WEEK = 5;
+    public static final int TYPE_K_MONTH = 30;
+    
+    public static final int FUQUAN_NO = 0;
+    public static final int FUQUAN_BEFORE = 1;
+    public static final int FUQUAN_AFTER = 2;
+    
+    public KEntity[] karray;
+    
 
-	public Macd[] macd;
-	public Dmi[] dmi;
-	public Wr[] wr;
-	public Boll[] boll;
-	public Kdj[] kdj;
-	public Rsi[] rsi;
-	public OBv[] obv;
+    public Macd[] macd;
+    public Dmi[] dmi;
+    public Wr[] wr;
+    public Boll[] boll;
+    public Kdj[] kdj;
+    public Rsi[] rsi;
+    public OBv[] obv;
+    public int type;
+    public int fuquan;
 
 	public static JSONObject convertJson(KDo obj) throws Exception {
 		JSONObject json = new JSONObject();
@@ -69,10 +82,12 @@ public class KDo extends StockDo {
 		JSONObject bodyjson = new JSONObject();
 		json.putOpt(StockDo.DATA, bodyjson);
 
-		bodyjson.put(StockDo.NAME, obj.name);
-		bodyjson.put(StockDo.SYMBOL, obj.symbol);
-		bodyjson.put(StockDo.TIMESTART, obj.timestart);
-		bodyjson.put(StockDo.TIMEEND, obj.timeend);
+        bodyjson.put(StockDo.NAME, obj.name);
+        bodyjson.put(StockDo.SYMBOL, obj.symbol);
+        bodyjson.put(StockDo.TIMESTART, obj.timestart);
+        bodyjson.put(StockDo.TIMEEND, obj.timeend);
+        bodyjson.put(KDo.TYPE, obj.type);
+        bodyjson.put(KDo.FUQUAN, obj.fuquan);
 
 		JSONObject entityjson = new JSONObject();
 
@@ -162,32 +177,33 @@ public class KDo extends StockDo {
 				StockDo stockDo = StockDo.parse(jsondata);
 				kdo.setStockDo(stockDo);
 
-				JSONObject jsonattr = jsondata.optJSONObject(StockDo.ATTR);
-				if (jsonattr != null) {
-					JSONArray kjsonarray = jsonattr.optJSONArray(KEntity.FLAG);
-					if (kjsonarray != null) {
-						final int len = kjsonarray.length();
-						KEntity[] array = new KEntity[len];
-						for (int i = 0; i < len; i++) {
-							array[i] = KEntity.parse(kjsonarray
-									.getJSONObject(i));
-						}
-						kdo.karray = array;
-					}
+                JSONObject jsonattr = jsondata.optJSONObject(StockDo.ATTR);
+                if (jsonattr != null) {
+                    kdo.type = jsonattr.optInt(TYPE);
+                    kdo.fuquan = jsonattr.optInt(FUQUAN);
+                    JSONArray kjsonarray = jsonattr.optJSONArray(KEntity.FLAG);
+                    if (kjsonarray != null) {
+                        final int len = kjsonarray.length();
+                        KEntity[] array = new KEntity[len];
+                        for (int i = 0; i < len; i++) {
+                            array[i] = KEntity.parse(kjsonarray.getJSONObject(i));
+                        }
+                        kdo.karray = array;
+                    }
 
 					JSONArray macdjsonarray = jsonattr.optJSONArray(Macd.FLAG);
 					if (macdjsonarray != null) {
 						final int len = macdjsonarray.length();
 						Macd[] array = new Macd[len];
 						for (int i = 0; i < len; i++) {
-							array[i] = Macd.parse(kjsonarray.getJSONObject(i));
+							array[i] = Macd.parse(macdjsonarray.getJSONObject(i));
 						}
 						kdo.macd = array;
 					}
 
 					JSONArray dmijsonarray = jsonattr.optJSONArray(Dmi.FLAG);
 					if (dmijsonarray != null) {
-						final int len = macdjsonarray.length();
+						final int len = dmijsonarray.length();
 						Dmi[] array = new Dmi[len];
 						for (int i = 0; i < len; i++) {
 							array[i] = Dmi.parse(dmijsonarray.getJSONObject(i));
@@ -206,8 +222,8 @@ public class KDo extends StockDo {
 					}
 
 					JSONArray bolljsonarray = jsonattr.optJSONArray(Boll.FLAG);
-					if (wrjsonarray != null) {
-						final int len = wrjsonarray.length();
+					if (bolljsonarray != null) {
+						final int len = bolljsonarray.length();
 						Boll[] array = new Boll[len];
 						for (int i = 0; i < len; i++) {
 							array[i] = Boll.parse(bolljsonarray
@@ -227,8 +243,8 @@ public class KDo extends StockDo {
 					}
 
 					JSONArray obvjsonarray = jsonattr.optJSONArray(OBv.FLAG);
-					if (kdjjsonarray != null) {
-						final int len = kdjjsonarray.length();
+					if (obvjsonarray != null) {
+						final int len = obvjsonarray.length();
 						OBv[] array = new OBv[len];
 						for (int i = 0; i < len; i++) {
 							array[i] = OBv.parse(obvjsonarray.getJSONObject(i));
@@ -237,7 +253,7 @@ public class KDo extends StockDo {
 					}
 
 					JSONArray rsijsonarray = jsonattr.optJSONArray(OBv.FLAG);
-					if (kdjjsonarray != null) {
+					if (rsijsonarray != null) {
 						final int len = rsijsonarray.length();
 						Rsi[] array = new Rsi[len];
 						for (int i = 0; i < len; i++) {
@@ -267,6 +283,7 @@ public class KDo extends StockDo {
 			JSONObject bodyjson = new JSONObject();
 			bodyjson.putOpt(TIME, k.time);
 			bodyjson.putOpt(GAO, k.gao);
+			bodyjson.putOpt(KAI, k.kai);
 			bodyjson.putOpt(DI, k.di);
 			bodyjson.putOpt(SHOU, k.shou);
 			bodyjson.putOpt(AMOUNT, k.amount);
@@ -312,7 +329,7 @@ public class KDo extends StockDo {
 	}
 
 	public static class Macd extends Entity {
-		public static final String FLAG = Macd.class.getSimpleName();
+		public static final String FLAG = "macd";
 
 		public float diff;
 		public float dea;
@@ -347,7 +364,7 @@ public class KDo extends StockDo {
 	}
 
 	public static class Dmi extends Entity {
-		public static final String FLAG = Dmi.class.getSimpleName();
+		public static final String FLAG = "dmi";
 
 		public float pdi;
 		public float mdi;
@@ -378,7 +395,7 @@ public class KDo extends StockDo {
 	}
 
 	public static class Wr extends Entity {
-		public static final String FLAG = Wr.class.getSimpleName();
+		public static final String FLAG = "wr";
 
 		public float wr1;
 		public float wr2;
@@ -403,7 +420,7 @@ public class KDo extends StockDo {
 	}
 
 	public static class Boll extends Entity {
-		public static final String FLAG = Boll.class.getSimpleName();
+		public static final String FLAG = "boll";
 		public float upper;
 		public float mid;
 		public float lowper;
@@ -430,7 +447,7 @@ public class KDo extends StockDo {
 	}
 
 	public static class Kdj extends Entity {
-		public static final String FLAG = Kdj.class.getSimpleName();
+		public static final String FLAG = "kdj";
 
 		public float k;
 		public float d;
@@ -458,7 +475,7 @@ public class KDo extends StockDo {
 	}
 
 	public static class OBv extends Entity {
-		public static final String FLAG = OBv.class.getSimpleName();
+		public static final String FLAG = "obv";
 		public long obv;
 		public float scope;
 		public String unit;
@@ -481,7 +498,7 @@ public class KDo extends StockDo {
 	}
 
 	public static class Rsi extends Entity {
-		public static final String FLAG = Rsi.class.getSimpleName();
+		public static final String FLAG = "rsi";
 
 		public float rsi6;
 		public float rsi12;
@@ -508,12 +525,13 @@ public class KDo extends StockDo {
 		}
 	}
 
-	public static KDo produce(String symbol, String timestart, String timeend,
-			boolean khas, boolean macdhas, boolean dmihas, boolean wrhas,
-			boolean bollhas, boolean kdjhas, boolean obvhas, boolean rsihas) {
+	public static KDo produce(int type, int fuquan, String symbol, String timestart,
+			String timeend, boolean khas, boolean macdhas, boolean dmihas,
+			boolean wrhas, boolean bollhas, boolean kdjhas, boolean obvhas,
+			boolean rsihas) {
 		KDo kDo = new KDo();
 
-		final int count = 220;
+		final int count = 15;
 
 		KEntity[] tmp_data = new KEntity[count];
 
@@ -599,6 +617,8 @@ public class KDo extends StockDo {
 
 			tmp_data[index] = item;
 		}
+		kDo.type = type;
+		kDo.fuquan = fuquan;
 		if (khas) {
 			kDo.karray = tmp_data;
 		}
