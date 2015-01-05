@@ -6,14 +6,20 @@ import org.json.JSONObject;
 public class JSONResponse {
     public static final String SUCCESS = "success";
     public static final String MESSAGE = "message";
+    public static final String RESPONSEDATE = "responseDate";
+    public static final String RESPONSETIME = "responseTime";
 
     public boolean success;
     public String message;
+    public String responseDate;
+    public String responseTime;
 
     public static JSONResponse parse(JSONObject jsonObject) {
         JSONResponse response = new JSONResponse();
         response.success = jsonObject.optBoolean(JSONResponse.SUCCESS);
         response.message = jsonObject.optString(JSONResponse.MESSAGE);
+        response.responseDate = jsonObject.optString(StockDo.RESPONSEDATE);
+        response.responseTime = jsonObject.optString(StockDo.RESPONSETIME);
         return response;
     }
 
@@ -24,6 +30,8 @@ public class JSONResponse {
             jsonObject = new JSONObject(jsonstring);
             response.success = jsonObject.optBoolean(JSONResponse.SUCCESS);
             response.message = jsonObject.optString(JSONResponse.MESSAGE);
+            response.responseDate = jsonObject.optString(StockDo.RESPONSEDATE);
+            response.responseTime = jsonObject.optString(StockDo.RESPONSETIME);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,6 +43,8 @@ public class JSONResponse {
             return;
         success = response.success;
         message = response.message;
+        responseDate = response.responseDate;
+        responseTime = response.responseTime;
     }
 
     public JSONResponse getJsonResponse() {

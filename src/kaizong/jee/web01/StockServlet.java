@@ -93,8 +93,17 @@ public class StockServlet extends HttpServlet {
 			fuquan = Integer.valueOf(fuquantext);
 		}
 
+		String requestDate = req.getParameter(KDo.REQUESTDATE);
+
+		String counttext = req.getParameter(KDo.COUNT);
+		int count = 0;
+		if (fuquantext != null) {
+			count = Integer.valueOf(counttext);
+		}
+
 		KDo result = KDo.produce(type, fuquan, symbol, timestart, timeend,
-				khas, macdhas, dmihas, wrhas, bollhas, kdjhas, obvhas, rsihas);
+				requestDate, count, khas, macdhas, dmihas, wrhas, bollhas,
+				kdjhas, obvhas, rsihas);
 		JSONObject jsonObject = null;
 		try {
 			jsonObject = KDo.convertJson(result);

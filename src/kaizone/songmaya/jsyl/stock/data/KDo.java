@@ -1,5 +1,7 @@
 package kaizone.songmaya.jsyl.stock.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import kaizone.android.b89.util.Utils;
@@ -46,48 +48,55 @@ public class KDo extends StockDo {
 	public static final String RSI12 = "rsi12";
 	public static final String RSI24 = "rsi24";
 
-    public static final String K = "k";
-    public static final String D = "d";
-    public static final String J = "j";
-    
-    public static final String TYPE = "type";
-    public static final String FUQUAN = "fuquan";
+	public static final String K = "k";
+	public static final String D = "d";
+	public static final String J = "j";
 
-    public static final int TYPE_K_DAY = 0;
-    public static final int TYPE_K_WEEK = 5;
-    public static final int TYPE_K_MONTH = 30;
-    
-    public static final int FUQUAN_NO = 0;
-    public static final int FUQUAN_BEFORE = 1;
-    public static final int FUQUAN_AFTER = 2;
-    
-    public KEntity[] karray;
-    
+	public static final String TYPE = "type";
+	public static final String FUQUAN = "fuquan";
+	public static final String COUNT = "count";
+	public static final String REQUESTDATE = "requestDate";
 
-    public Macd[] macd;
-    public Dmi[] dmi;
-    public Wr[] wr;
-    public Boll[] boll;
-    public Kdj[] kdj;
-    public Rsi[] rsi;
-    public OBv[] obv;
-    public int type;
-    public int fuquan;
+	public static final int TYPE_K_DAY = 0;
+	public static final int TYPE_K_WEEK = 5;
+	public static final int TYPE_K_MONTH = 30;
 
-	public static JSONObject convertJson(KDo obj) throws Exception {
-		JSONObject json = new JSONObject();
-		json.putOpt(JSONResponse.SUCCESS, obj.success);
-		json.putOpt(JSONResponse.MESSAGE, obj.message);
+	public static final int FUQUAN_NO = 0;
+	public static final int FUQUAN_BEFORE = 1;
+	public static final int FUQUAN_AFTER = 2;
+
+	public KEntity[] karray;
+
+	public Macd[] macd;
+	public Dmi[] dmi;
+	public Wr[] wr;
+	public Boll[] boll;
+	public Kdj[] kdj;
+	public Rsi[] rsi;
+	public OBv[] obv;
+	public int type;
+	public int fuquan;
+	public int count;
+	public String requestDate;
+
+    public static JSONObject convertJson(KDo obj) throws Exception {
+        JSONObject json = new JSONObject();
+        json.putOpt(JSONResponse.SUCCESS, obj.success);
+        json.putOpt(JSONResponse.MESSAGE, obj.message);
+        json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
+        json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
 
 		JSONObject bodyjson = new JSONObject();
 		json.putOpt(StockDo.DATA, bodyjson);
 
-        bodyjson.put(StockDo.NAME, obj.name);
-        bodyjson.put(StockDo.SYMBOL, obj.symbol);
-        bodyjson.put(StockDo.TIMESTART, obj.timestart);
-        bodyjson.put(StockDo.TIMEEND, obj.timeend);
-        bodyjson.put(KDo.TYPE, obj.type);
-        bodyjson.put(KDo.FUQUAN, obj.fuquan);
+		bodyjson.put(StockDo.NAME, obj.name);
+		bodyjson.put(StockDo.SYMBOL, obj.symbol);
+		bodyjson.put(StockDo.TIMESTART, obj.timestart);
+		bodyjson.put(StockDo.TIMEEND, obj.timeend);
+		bodyjson.put(KDo.TYPE, obj.type);
+		bodyjson.put(KDo.FUQUAN, obj.fuquan);
+		bodyjson.put(KDo.COUNT, obj.count);
+		bodyjson.put(KDo.REQUESTDATE, obj.requestDate);
 
 		JSONObject entityjson = new JSONObject();
 
@@ -177,26 +186,28 @@ public class KDo extends StockDo {
 				StockDo stockDo = StockDo.parse(jsondata);
 				kdo.setStockDo(stockDo);
 
-                JSONObject jsonattr = jsondata.optJSONObject(StockDo.ATTR);
-                if (jsonattr != null) {
-                    kdo.type = jsonattr.optInt(TYPE);
-                    kdo.fuquan = jsonattr.optInt(FUQUAN);
-                    JSONArray kjsonarray = jsonattr.optJSONArray(KEntity.FLAG);
-                    if (kjsonarray != null) {
-                        final int len = kjsonarray.length();
-                        KEntity[] array = new KEntity[len];
-                        for (int i = 0; i < len; i++) {
-                            array[i] = KEntity.parse(kjsonarray.getJSONObject(i));
-                        }
-                        kdo.karray = array;
-                    }
+				JSONObject jsonattr = jsondata.optJSONObject(StockDo.ATTR);
+				if (jsonattr != null) {
+					kdo.type = jsonattr.optInt(TYPE);
+					kdo.fuquan = jsonattr.optInt(FUQUAN);
+					JSONArray kjsonarray = jsonattr.optJSONArray(KEntity.FLAG);
+					if (kjsonarray != null) {
+						final int len = kjsonarray.length();
+						KEntity[] array = new KEntity[len];
+						for (int i = 0; i < len; i++) {
+							array[i] = KEntity.parse(kjsonarray
+									.getJSONObject(i));
+						}
+						kdo.karray = array;
+					}
 
 					JSONArray macdjsonarray = jsonattr.optJSONArray(Macd.FLAG);
 					if (macdjsonarray != null) {
 						final int len = macdjsonarray.length();
 						Macd[] array = new Macd[len];
 						for (int i = 0; i < len; i++) {
-							array[i] = Macd.parse(macdjsonarray.getJSONObject(i));
+							array[i] = Macd.parse(macdjsonarray
+									.getJSONObject(i));
 						}
 						kdo.macd = array;
 					}
@@ -525,13 +536,11 @@ public class KDo extends StockDo {
 		}
 	}
 
-	public static KDo produce(int type, int fuquan, String symbol, String timestart,
-			String timeend, boolean khas, boolean macdhas, boolean dmihas,
-			boolean wrhas, boolean bollhas, boolean kdjhas, boolean obvhas,
-			boolean rsihas) {
+	public static KDo produce(int type, int fuquan, String symbol,
+			String timestart, String timeend, String requestDate, int count,
+			boolean khas, boolean macdhas, boolean dmihas, boolean wrhas,
+			boolean bollhas, boolean kdjhas, boolean obvhas, boolean rsihas) {
 		KDo kDo = new KDo();
-
-		final int count = 15;
 
 		KEntity[] tmp_data = new KEntity[count];
 
@@ -647,6 +656,15 @@ public class KDo extends StockDo {
 		kDo.message = "请求成功";
 		kDo.timestart = timestart;
 		kDo.timeend = timeend;
+		kDo.count = count;
+		kDo.requestDate = requestDate;
+		
+		Date date = new Date();
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
+		kDo.responseDate = dateformat.format(date);
+		kDo.responseTime = timeformat.format(date);
+		
 		return kDo;
 
 	}

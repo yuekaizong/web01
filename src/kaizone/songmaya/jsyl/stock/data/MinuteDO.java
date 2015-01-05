@@ -1,5 +1,8 @@
 package kaizone.songmaya.jsyl.stock.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import kaizone.android.b89.util.Utils;
 
 import org.json.JSONArray;
@@ -51,10 +54,12 @@ public class MinuteDO extends StockDo {
 	public MEntity[] ms;
 	public TradeEntity[] trades;
 
-	public static JSONObject convertJson(MinuteDO obj) throws Exception {
-		JSONObject json = new JSONObject();
-		json.putOpt(JSONResponse.SUCCESS, obj.success);
-		json.putOpt(JSONResponse.MESSAGE, obj.message);
+    public static JSONObject convertJson(MinuteDO obj) throws Exception {
+        JSONObject json = new JSONObject();
+        json.putOpt(JSONResponse.SUCCESS, obj.success);
+        json.putOpt(JSONResponse.MESSAGE, obj.message);
+        json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
+        json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
 
 		JSONObject bodyjson = new JSONObject();
 		json.putOpt(StockDo.DATA, bodyjson);
@@ -297,6 +302,13 @@ public class MinuteDO extends StockDo {
 		mDo.message = "请求成功";
 		mDo.timestart = timestart;
 		mDo.timeend = timeend;
+		
+		Date date = new Date();
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
+		mDo.responseDate = dateformat.format(date);
+		mDo.responseTime = timeformat.format(date);
+		
 		return mDo;
 	}
 

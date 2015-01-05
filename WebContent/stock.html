@@ -10,8 +10,15 @@
 			var symbol = searchForm.minute_symbol.value;
 			var time_start = searchForm.minute_timestart.value;
 			var time_end = searchForm.minute_timeend.value;
-			var action = "stock?flag=" + flag + "&symbol=" + symbol
-					+ "&timestart=" + time_start + "&timeend=" + time_end;
+			var day5 = searchForm.minute_5day.checked;
+			var type = 0;
+			if (day5 == true) {
+				type = 5;
+			}
+
+			var action = "stock?flag=" + flag + "&type=" + type + "&symbol="
+					+ symbol + "&timestart=" + time_start + "&timeend="
+					+ time_end;
 			searchForm.action = action;
 			//searchForm.action = symbol;
 		} else if (searchForm.rcond[1].checked) {
@@ -19,6 +26,10 @@
 			var symbol = searchForm.kline_symbol.value;
 			var time_start = searchForm.kline_timestart.value;
 			var time_end = searchForm.kline_timeend.value;
+
+			var requestDate = searchForm.kline_request_date.value;
+			var requestcount = searchForm.kline_request_length.value;
+
 			var k = searchForm.kline_k.checked;
 			var macd = searchForm.kline_macd.checked;
 			var dmi = searchForm.kline_dmi.checked;
@@ -27,11 +38,32 @@
 			var kdj = searchForm.kline_kdj.checked;
 			var obv = searchForm.kline_obv.checked;
 			var rsi = searchForm.kline_rsi.checked;
+
+			var type = 0;
+			if (searchForm.kline_type[0].checked) {
+				type = 0;
+			} else if (searchForm.kline_type[1].checked) {
+				type = 5;
+			} else if (searchForm.kline_type[2].checked) {
+				type = 30;
+			}
+
+			var fuquan = 0;
+			if (searchForm.kline_fuquan[0].checked) {
+				fuquan = 0;
+			} else if (searchForm.kline_fuquan[1].checked) {
+				fuquan = 1;
+			} else if (searchForm.kline_fuquan[2].checked) {
+				fuquan = 2;
+			}
+
 			var action = "stock?flag=" + flag + "&symbol=" + symbol
 					+ "&timestart=" + time_start + "&timeend=" + time_end
 					+ "&macd=" + macd + "&dmi=" + dmi + "&wr=" + wr + "&boll="
 					+ boll + "&kdj=" + kdj + "&obv=" + obv + "&rsi=" + rsi
-					+ "&k=" + k;
+					+ "&K=" + k + "&type=" + type + "&fuquan=" + fuquan
+					+ "&requestDate=" + requestDate + "&count="
+					+ requestcount;
 
 			searchForm.action = action;
 		} else {
@@ -93,9 +125,20 @@
 				<td>最新时间：</td>
 				<td><input type="text" name="minute_timeend"></td>
 			</tr>
+			<tr>
+				<td>5日：</td>
+				<td><input type="checkbox" name="minute_5day"></td>
+			</tr>
 		</table>
 		<p>
 			<input type="radio" name="rcond" onclick="showkline()"> K线数据
+
+
+
+
+
+
+
 
 		
 		<p>
@@ -111,6 +154,14 @@
 			<tr>
 				<td>最新时间：</td>
 				<td><input type="text" name="kline_timeend"></td>
+			</tr>
+			<tr>
+				<td>请求日期：</td>
+				<td><input type="text" name="kline_request_date"></td>
+			</tr>
+			<tr>
+				<td>请求个数：</td>
+				<td><input type="text" name="kline_request_length"></td>
 			</tr>
 			<tr>
 				<td>K：</td>
@@ -143,6 +194,22 @@
 			<tr>
 				<td>RSI：</td>
 				<td><input type="checkbox" name="kline_rsi"></td>
+			</tr>
+			<tr>
+				<td>日K：</td>
+				<td><input type="radio" name="kline_type"></td>
+				<td>周K：</td>
+				<td><input type="radio" name="kline_type"></td>
+				<td>月K：</td>
+				<td><input type="radio" name="kline_type"></td>
+			</tr>
+			<tr>
+				<td>不复权：</td>
+				<td><input type="radio" name="kline_fuquan"></td>
+				<td>前复权：</td>
+				<td><input type="radio" name="kline_fuquan"></td>
+				<td>后复权：</td>
+				<td><input type="radio" name="kline_fuquan"></td>
 			</tr>
 		</table>
 		<p>
