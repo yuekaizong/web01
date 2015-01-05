@@ -2,6 +2,8 @@ package kaizong.jee.web01;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ import kaizone.songmaya.jsyl.stock.data.KDo.Macd;
 import kaizone.songmaya.jsyl.stock.data.KDo.OBv;
 import kaizone.songmaya.jsyl.stock.data.KDo.Rsi;
 import kaizone.songmaya.jsyl.stock.data.KDo.Wr;
+import kaizone.songmaya.jsyl.stock.data.JSONResponse;
 import kaizone.songmaya.jsyl.stock.data.KLineDo;
 import kaizone.songmaya.jsyl.stock.data.MinuteDO;
 import kaizone.songmaya.jsyl.stock.data.StockDo;
@@ -40,6 +43,8 @@ public class StockServlet extends HttpServlet {
 			doMinute(req, resp);
 		} else if (KDo.FLAG.equals(flag)) {
 			doKline(req, resp);
+		} else if("config".equals(flag)){
+			doConfig(req, resp);
 		}
 	}
 
@@ -107,6 +112,26 @@ public class StockServlet extends HttpServlet {
 		JSONObject jsonObject = null;
 		try {
 			jsonObject = KDo.convertJson(result);
+			PrintWriter out = resp.getWriter();
+			out.println(jsonObject.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void doConfig(HttpServletRequest req, HttpServletResponse resp){
+		JSONResponse obj = new JSONResponse();
+		obj.message = "请求成功";
+		obj.success = true;
+		Date date = new Date();
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
+		obj.responseDate = dateformat.format(date);
+		obj.responseTime = timeformat.format(date);
+		
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = JSONResponse.convertJson(obj);
 			PrintWriter out = resp.getWriter();
 			out.println(jsonObject.toString());
 		} catch (Exception e) {

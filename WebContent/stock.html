@@ -67,7 +67,7 @@
 
 			searchForm.action = action;
 		} else {
-			searchForm.action = "stock?cond=keyword"
+			searchForm.action = "stock?flag=config"
 		}
 	}
 
@@ -83,6 +83,7 @@
 		if (searchForm.rcond[0].checked) {
 			minute.style.display = ""
 			kline.style.display = "none"
+			key.style.display = "none"
 		} else {
 			minute.style.display = "none"
 		}
@@ -92,6 +93,7 @@
 		if (searchForm.rcond[1].checked) {
 			minute.style.display = "none"
 			kline.style.display = ""
+			key.style.display = "none"
 		} else {
 			kline.style.display = "none"
 		}
