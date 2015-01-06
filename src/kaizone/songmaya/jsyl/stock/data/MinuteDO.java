@@ -17,6 +17,7 @@ public class MinuteDO extends StockDo {
 	public static final String CHANGE = "change";
 	public static final String AMOUNT = "amount";
 	public static final String MEAN = "mean";
+	public static final String ISNODE = "isnode";
 	public static final String LASTTRADE = "lastTrade";
 	public static final String CHG = "chg";
 	public static final String OPEN = "open";
@@ -174,6 +175,7 @@ public class MinuteDO extends StockDo {
 		public float change; // 涨跌
 		public int amount; // 成交
 		public float mean; // 平均
+		public boolean isnode;
 
 		public static JSONObject convertJson(MEntity obj) throws Exception {
 			JSONObject bodyjson = new JSONObject();
@@ -182,6 +184,7 @@ public class MinuteDO extends StockDo {
 			bodyjson.putOpt(CHANGE, obj.change);
 			bodyjson.putOpt(AMOUNT, obj.amount);
 			bodyjson.putOpt(MEAN, obj.mean);
+			bodyjson.putOpt(ISNODE, obj.isnode);
 			return bodyjson;
 		}
 
@@ -193,6 +196,7 @@ public class MinuteDO extends StockDo {
 				obj.change = Float.valueOf(jsonObject.optString(CHANGE));
 				obj.amount = jsonObject.optInt(AMOUNT);
 				obj.mean = Float.valueOf(jsonObject.optString(MEAN));
+				obj.isnode = jsonObject.optBoolean(ISNODE);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -304,7 +308,7 @@ public class MinuteDO extends StockDo {
 		mDo.timeend = timeend;
 		
 		Date date = new Date();
-		SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
 		mDo.responseDate = dateformat.format(date);
 		mDo.responseTime = timeformat.format(date);

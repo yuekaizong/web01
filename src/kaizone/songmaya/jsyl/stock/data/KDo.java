@@ -79,12 +79,12 @@ public class KDo extends StockDo {
 	public int count;
 	public String requestDate;
 
-    public static JSONObject convertJson(KDo obj) throws Exception {
-        JSONObject json = new JSONObject();
-        json.putOpt(JSONResponse.SUCCESS, obj.success);
-        json.putOpt(JSONResponse.MESSAGE, obj.message);
-        json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
-        json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
+	public static JSONObject convertJson(KDo obj) throws Exception {
+		JSONObject json = new JSONObject();
+		json.putOpt(JSONResponse.SUCCESS, obj.success);
+		json.putOpt(JSONResponse.MESSAGE, obj.message);
+		json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
+		json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
 
 		JSONObject bodyjson = new JSONObject();
 		json.putOpt(StockDo.DATA, bodyjson);
@@ -168,6 +168,16 @@ public class KDo extends StockDo {
 				wr_jsonarray.put(i, Wr.convertJson(wrs[i]));
 			}
 			entityjson.put(Wr.FLAG, wr_jsonarray);
+		}
+
+		OBv[] obvs = obj.obv;
+		if (obvs != null) {
+			int len = obvs.length;
+			JSONArray obv_jsonarray = new JSONArray();
+			for (int i = 0; i < len; i++) {
+				obv_jsonarray.put(i, OBv.convertJson(obvs[i]));
+			}
+			entityjson.put(OBv.FLAG, obv_jsonarray);
 		}
 
 		bodyjson.put(StockDo.ATTR, entityjson);
@@ -548,7 +558,7 @@ public class KDo extends StockDo {
 		float high = 18.86f;
 		Random random = new Random();
 		float tmp_shou = 0;
-		String tmp_time = Utils.date2();
+		String tmp_time = requestDate;
 
 		for (int index = 0; index < count; index++) {
 			float kai;
@@ -609,7 +619,7 @@ public class KDo extends StockDo {
 			di = Utils.floatTo00(di);
 
 			lian = random.nextInt(20000);
-			time = Utils.dateAfter(tmp_time, index);
+			time = Utils.dateAfter(tmp_time, -index);
 
 			if (time.endsWith("01")) {
 				isnode = true;
@@ -654,17 +664,17 @@ public class KDo extends StockDo {
 		kDo.symbol = symbol;
 		kDo.success = true;
 		kDo.message = "请求成功";
-		kDo.timestart = timestart;
-		kDo.timeend = timeend;
+		kDo.timestart = tmp_data[count - 1].time;
+		kDo.timeend = tmp_data[0].time;
 		kDo.count = count;
 		kDo.requestDate = requestDate;
-		
+
 		Date date = new Date();
-		SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
 		kDo.responseDate = dateformat.format(date);
 		kDo.responseTime = timeformat.format(date);
-		
+
 		return kDo;
 
 	}

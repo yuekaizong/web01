@@ -124,7 +124,7 @@ public class StockServlet extends HttpServlet {
 		obj.message = "请求成功";
 		obj.success = true;
 		Date date = new Date();
-		SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
 		obj.responseDate = dateformat.format(date);
 		obj.responseTime = timeformat.format(date);
