@@ -80,6 +80,13 @@ public class Utils {
 		String date = format.format(c.getTime());
 		return date;
 	}
+	
+	public static String date3() {
+	    SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+	    Calendar c = Calendar.getInstance();
+	    String date = format.format(c.getTime());
+	    return date;
+	}
 
 	public static String dateHZ() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
@@ -108,6 +115,23 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return afterDateString;
+	}
+	
+	public static String dateAfter3(String datestring, int after) {
+	    String afterDateString = "";
+	    Date date = null;
+	    SimpleDateFormat df = new SimpleDateFormat("MM-dd");
+	    try {
+	        date = df.parse(datestring);
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(date);
+	        calendar.add(Calendar.DAY_OF_MONTH, after);
+	        date = calendar.getTime();
+	        afterDateString = df.format(date);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return afterDateString;
 	}
 
 	public static String dateAfterHZ(String datestring, int after) {
