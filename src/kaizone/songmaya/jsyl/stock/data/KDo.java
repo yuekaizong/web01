@@ -26,13 +26,15 @@ public class KDo extends StockDo {
     // public static final String Boll = "Boll";
     // public static final String Kdj = "Kdj";
     // public static final String Rsi = "Rsi";
+    public static final String MA5 = "ma5";
+    public static final String MA10 = "ma10";
+    public static final String MA20 = "ma20";
 
     public static final String DIFF = "diff";
     public static final String DEA = "dea";
     public static final String MACD = "macd";
 
     public static final String OBV = "obv";
-    public static final String DMI = "dmi";
 
     public static final String PDI = "pdi";
     public static final String MDI = "mdi";
@@ -298,6 +300,9 @@ public class KDo extends StockDo {
         public float shou;
         public int amount;
         public boolean isnode;
+        public float ma5;
+        public float ma10;
+        public float ma20;
 
         public static JSONObject convertJson(KEntity k) throws Exception {
             JSONObject bodyjson = new JSONObject();
@@ -308,6 +313,10 @@ public class KDo extends StockDo {
             bodyjson.putOpt(SHOU, k.shou);
             bodyjson.putOpt(AMOUNT, k.amount);
             bodyjson.putOpt(ISNODE, k.isnode);
+            bodyjson.putOpt(MA5, k.ma5);
+            bodyjson.putOpt(MA10, k.ma10);
+            bodyjson.putOpt(MA20, k.ma20);
+          
             // if (k.macd != null) {
             // bodyjson.putOpt(k.macd.flag, Macd.convertJson(k.macd));
             // }
@@ -339,6 +348,9 @@ public class KDo extends StockDo {
                 obj.shou = Float.valueOf(jsonObject.optString(SHOU));
                 obj.amount = jsonObject.optInt(AMOUNT);
                 obj.isnode = jsonObject.optBoolean(ISNODE);
+                obj.ma5 = Float.valueOf(jsonObject.optString(MA5));
+                obj.ma10 = Float.valueOf(jsonObject.optString(MA10));
+                obj.ma20 = Float.valueOf(jsonObject.optString(MA20));
                 // JSONObject jsonmacd = jsonObject.getJSONObject(Macd.FLAG);
                 // obj.macd = Macd.parse(jsonmacd);
 
@@ -552,6 +564,9 @@ public class KDo extends StockDo {
             boolean khas, boolean macdhas, boolean dmihas, boolean wrhas,
             boolean bollhas, boolean kdjhas, boolean obvhas, boolean rsihas) {
         KDo kDo = new KDo();
+        if (requestDate == null || "".equals(requestDate) || "null".equals(requestDate)) {
+            requestDate = Utils.date2();
+        }
 
         KEntity[] tmp_data = new KEntity[count];
 
@@ -559,7 +574,7 @@ public class KDo extends StockDo {
         float high = 18.86f;
         Random random = new Random();
         float tmp_shou = 0;
-        String tmp_time = requestDate;
+        String tmp_date = requestDate;
 
         for (int index = 0; index < count; index++) {
             float kai;
@@ -622,7 +637,7 @@ public class KDo extends StockDo {
             di = Utils.floatTo00(di);
 
             lian = random.nextInt(20000);
-            time = Utils.dateAfter(tmp_time, -index);
+            time = Utils.dateAfter(tmp_date, -index);
 
             if (time.endsWith("01")) {
                 isnode = true;
@@ -636,6 +651,11 @@ public class KDo extends StockDo {
             item.time = time;
             item.amount = lian;
             item.isnode = isnode;
+            if(count - index >= 5){
+                item.ma5 = Utils.floatTo(randomNextOfScope(kai - 0.01f, 0.01f), 2);
+                item.ma10 = Utils.floatTo(randomNextOfScope(kai - 0.02f, 0.01f), 2);
+                item.ma20 = Utils.floatTo(randomNextOfScope(kai - 0.03f, 0.01f), 2);
+            }
 
             tmp_data[index] = item;
         }
@@ -670,7 +690,6 @@ public class KDo extends StockDo {
         kDo.timestart = tmp_data[count - 1].time;
         kDo.timeend = tmp_data[0].time;
         kDo.count = count;
-        kDo.requestDate = requestDate;
 
         Date date = new Date();
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");

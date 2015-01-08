@@ -11,7 +11,6 @@ import kaizone.songmaya.jsyl.stock.data.KDo.Macd;
 import kaizone.songmaya.jsyl.stock.data.KDo.OBv;
 import kaizone.songmaya.jsyl.stock.data.KDo.Rsi;
 import kaizone.songmaya.jsyl.stock.data.KDo.Wr;
-import kaizone.songmaya.jsyl.stock.data.KLineDo.K;
 
 public class StockMath {
 

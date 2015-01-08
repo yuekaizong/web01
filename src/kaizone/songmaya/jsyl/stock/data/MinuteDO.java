@@ -284,7 +284,7 @@ public class MinuteDO extends StockDo {
 
     public static MinuteDO produce(int type, String symbol, String timestart,
             String timeend) {
-        int count = 15;
+        int count = 180;
         MinuteDO mDo = new MinuteDO();
 
         float price = 10.37f;
@@ -307,7 +307,7 @@ public class MinuteDO extends StockDo {
             }
             m.now = Utils.floatTo(randomNextOfScope(price, 0.05f), 2);
             m.amount = randomNext(10000);
-            m.mean = Utils.floatTo(randomNextOfScope(price, 0.1f), 2);
+            m.mean = Utils.floatTo(randomNextOfScope((price-0.01f), 0.01f), 2);
             m.change = Utils.floatTo00((float) ((m.now - price) / price));
             tmp_m[i] = m;
 
