@@ -307,7 +307,7 @@ public class MinuteDO extends StockDo {
             }
             m.now = Utils.floatTo(randomNextOfScope(price, 0.05f), 2);
             m.amount = randomNext(10000);
-            m.mean = Utils.floatTo(randomNextOfScope((price-0.01f), 0.01f), 2);
+            m.mean = Utils.floatTo(randomNextOfScope((m.now-0.1f), 0.01f), 2);
             m.change = Utils.floatTo00((float) ((m.now - price) / price));
             tmp_m[i] = m;
 

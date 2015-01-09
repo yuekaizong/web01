@@ -78,6 +78,9 @@ public class KDo extends StockDo {
     public Kdj[] kdj;
     public Rsi[] rsi;
     public OBv[] obv;
+    public float[] ma5;
+    public float[] ma10;
+    public float[] ma20;
     public int type;
     public int fuquan;
     public int count;
@@ -184,6 +187,36 @@ public class KDo extends StockDo {
             entityjson.put(OBv.FLAG, obv_jsonarray);
         }
 
+        float[] ma5s = obj.ma5;
+        if (ma5s != null) {
+            int len = ma5s.length;
+            JSONArray jsonarray = new JSONArray();
+            for (int i = 0; i < len; i++) {
+                jsonarray.put(i, ma5s[i]);
+            }
+            entityjson.put(MA5, jsonarray);
+        }
+        
+        float[] ma10s = obj.ma10;
+        if (ma10s != null) {
+            int len = ma10s.length;
+            JSONArray jsonarray = new JSONArray();
+            for (int i = 0; i < len; i++) {
+                jsonarray.put(i, ma10s[i]);
+            }
+            entityjson.put(MA10, jsonarray);
+        }
+        
+        float[] ma20s = obj.ma20;
+        if (ma20s != null) {
+            int len = ma20s.length;
+            JSONArray jsonarray = new JSONArray();
+            for (int i = 0; i < len; i++) {
+                jsonarray.put(i, ma20s[i]);
+            }
+            entityjson.put(MA20, jsonarray);
+        }
+
         bodyjson.put(StockDo.ATTR, entityjson);
         return json;
     }
@@ -283,6 +316,36 @@ public class KDo extends StockDo {
                         }
                         kdo.rsi = array;
                     }
+
+                    JSONArray ma5jsonarray = jsonattr.optJSONArray(MA5);
+                    if (ma5jsonarray != null) {
+                        final int len = ma5jsonarray.length();
+                        float[] array = new float[len];
+                        for (int i = 0; i < len; i++) {
+                            array[i] = (float) (ma5jsonarray.optDouble(i, 0f));
+                        }
+                        kdo.ma5 = array;
+                    }
+
+                    JSONArray ma10jsonarray = jsonattr.optJSONArray(MA10);
+                    if (ma10jsonarray != null) {
+                        final int len = ma10jsonarray.length();
+                        float[] array = new float[len];
+                        for (int i = 0; i < len; i++) {
+                            array[i] = (float) (ma10jsonarray.optDouble(i, 0f));
+                        }
+                        kdo.ma10 = array;
+                    }
+
+                    JSONArray ma20jsonarray = jsonattr.optJSONArray(MA20);
+                    if (ma20jsonarray != null) {
+                        final int len = ma20jsonarray.length();
+                        float[] array = new float[len];
+                        for (int i = 0; i < len; i++) {
+                            array[i] = (float) (ma20jsonarray.optDouble(i, 0f));
+                        }
+                        kdo.ma20 = array;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -300,9 +363,6 @@ public class KDo extends StockDo {
         public float shou;
         public int amount;
         public boolean isnode;
-        public float ma5;
-        public float ma10;
-        public float ma20;
 
         public static JSONObject convertJson(KEntity k) throws Exception {
             JSONObject bodyjson = new JSONObject();
@@ -313,10 +373,7 @@ public class KDo extends StockDo {
             bodyjson.putOpt(SHOU, k.shou);
             bodyjson.putOpt(AMOUNT, k.amount);
             bodyjson.putOpt(ISNODE, k.isnode);
-            bodyjson.putOpt(MA5, k.ma5);
-            bodyjson.putOpt(MA10, k.ma10);
-            bodyjson.putOpt(MA20, k.ma20);
-          
+
             // if (k.macd != null) {
             // bodyjson.putOpt(k.macd.flag, Macd.convertJson(k.macd));
             // }
@@ -348,9 +405,6 @@ public class KDo extends StockDo {
                 obj.shou = Float.valueOf(jsonObject.optString(SHOU));
                 obj.amount = jsonObject.optInt(AMOUNT);
                 obj.isnode = jsonObject.optBoolean(ISNODE);
-                obj.ma5 = Float.valueOf(jsonObject.optString(MA5));
-                obj.ma10 = Float.valueOf(jsonObject.optString(MA10));
-                obj.ma20 = Float.valueOf(jsonObject.optString(MA20));
                 // JSONObject jsonmacd = jsonObject.getJSONObject(Macd.FLAG);
                 // obj.macd = Macd.parse(jsonmacd);
 
@@ -651,11 +705,6 @@ public class KDo extends StockDo {
             item.time = time;
             item.amount = lian;
             item.isnode = isnode;
-            if(count - index >= 5){
-                item.ma5 = Utils.floatTo(randomNextOfScope(kai - 0.01f, 0.01f), 2);
-                item.ma10 = Utils.floatTo(randomNextOfScope(kai - 0.02f, 0.01f), 2);
-                item.ma20 = Utils.floatTo(randomNextOfScope(kai - 0.03f, 0.01f), 2);
-            }
 
             tmp_data[index] = item;
         }
@@ -682,6 +731,10 @@ public class KDo extends StockDo {
         if (obvhas) {
             kDo.obv = StockMath.computeOBv(tmp_data);
         }
+        
+        // kDo.ma5 = StockMath.testMA(tmp_data, KDo.MA5);
+        // kDo.ma10 = StockMath.testMA(tmp_data, KDo.MA10);
+        // kDo.ma20 = StockMath.testMA(tmp_data, KDo.MA20);
 
         kDo.name = "星星点点";
         kDo.symbol = symbol;

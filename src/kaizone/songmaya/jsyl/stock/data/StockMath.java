@@ -321,4 +321,32 @@ public class StockMath {
         return wrs;
     }
 
+    public static float[] testMA(KEntity[] ks, String flagMA) {
+        int count = 0;
+        float scope = 0.1f;
+        float diff = 0.5f;
+        final int len = ks.length;
+        if (len > 20) {
+            if (flagMA.equals(KDo.MA5)) {
+                count = len - 5;
+                diff = 0.5f;
+            } else if (flagMA.equals(KDo.MA10)) {
+                count = len - 10;
+                diff = 1f;
+            } else if (flagMA.equals(KDo.MA20)) {
+                count = len - 20;
+                diff = 1.5f;
+            }
+        } else {
+            count = len;
+        }
+
+        float[] mas = new float[count];
+        for (int i = 0; i < count; i++) {
+            final float price = ks[i].shou - diff;
+            mas[i] = Utils.floatTo(StockDo.randomNextOfScope(price, scope), 2);
+        }
+        return mas;
+    }
+
 }

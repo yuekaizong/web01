@@ -39,10 +39,8 @@ public class JSONResponse {
             jsonObject = new JSONObject(jsonstring);
             response.success = jsonObject.optBoolean(JSONResponse.SUCCESS);
             response.message = jsonObject.optString(JSONResponse.MESSAGE);
-            response.responseDate = jsonObject
-                    .optString(JSONResponse.RESPONSEDATE);
-            response.responseTime = jsonObject
-                    .optString(JSONResponse.RESPONSETIME);
+            response.responseDate = jsonObject.optString(JSONResponse.RESPONSEDATE);
+            response.responseTime = jsonObject.optString(JSONResponse.RESPONSETIME);
         } catch (Exception e) {
             e.printStackTrace();
         }
