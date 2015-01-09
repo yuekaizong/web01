@@ -307,7 +307,7 @@ public class KDo extends StockDo {
                         kdo.obv = array;
                     }
 
-                    JSONArray rsijsonarray = jsonattr.optJSONArray(OBv.FLAG);
+                    JSONArray rsijsonarray = jsonattr.optJSONArray(Rsi.FLAG);
                     if (rsijsonarray != null) {
                         final int len = rsijsonarray.length();
                         Rsi[] array = new Rsi[len];
