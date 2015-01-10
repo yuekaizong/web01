@@ -139,7 +139,7 @@ public class KDo extends StockDo {
 
         Dmi[] dmis = obj.dmi;
         if (dmis != null) {
-            int dmilen = bolls.length;
+            int dmilen = dmis.length;
             JSONArray dmi_jsonarray = new JSONArray();
             for (int i = 0; i < dmilen; i++) {
                 dmi_jsonarray.put(i, Dmi.convertJson(dmis[i]));
@@ -730,6 +730,9 @@ public class KDo extends StockDo {
         }
         if (obvhas) {
             kDo.obv = StockMath.computeOBv(tmp_data);
+        }
+        if (dmihas) {
+        	kDo.dmi = StockMath.testDmi(tmp_data);
         }
         
         // kDo.ma5 = StockMath.testMA(tmp_data, KDo.MA5);
