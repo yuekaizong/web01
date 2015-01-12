@@ -14,12 +14,42 @@ public class StockDo extends JSONResponse {
     public static final String DATA = "data";
     public static final String TIMESTART = "timestart";
     public static final String TIMEEND = "timeend";
+    
+    public static final String LASTTRADE = "lastTrade";
+    public static final String CHANGE = "change";
+    public static final String CHG = "chg";
+    public static final String OPEN = "open";
+    public static final String PREVCLOSE = "prevClose";
+    public static final String AMPLITUDE = "amplitude";
+    public static final String TURNOVER = "turnover";
+    public static final String VOLUME = "volume";
+    public static final String ZUIDI = "zuiDi";
+    public static final String ZUIGAO = "zuiGao";
+    public static final String SHIYINLV = "shiYinLv";
+    public static final String PINGJIASHU = "pingJiaShu";
+    public static final String DIEJIASHU = "dieJiaShu";
 
     public String symbol;
     public String name;
     public String flag;
     public String timestart;
     public String timeend;
+    
+    public int type;
+    public float lastTrade; // 最新
+    public float chg; // 涨跌幅 % Chg
+    public float change; // 涨跌额
+    public float open; // 今开
+    public float prevClose; // 昨收
+    public float amplitude; // 振幅
+    public String turnover; // 成交额
+    public String volume; // 成交量
+    public float zuiDi;
+    public float zuiGao;
+
+    public float shiYinLv;
+    public float pingJiaShu;
+    public float dieJiaShu;
 
     public static StockDo parseJsonString(String jsonstring) {
         JSONObject jsonObject = null;
@@ -43,6 +73,21 @@ public class StockDo extends JSONResponse {
         obj.flag = jsonObject.optString(FLAG);
         obj.timestart = jsonObject.optString(TIMESTART);
         obj.timeend = jsonObject.optString(TIMEEND);
+        
+        obj.lastTrade = (float) jsonObject.optDouble(LASTTRADE);
+        obj.chg = (float) jsonObject.optDouble(CHG);
+        obj.change = (float) jsonObject.optDouble(CHANGE);
+        obj.open = (float) jsonObject.optDouble(OPEN);
+        obj.prevClose = (float) jsonObject.optDouble(PREVCLOSE);
+        obj.amplitude = (float) jsonObject.optDouble(AMPLITUDE);
+        obj.turnover = jsonObject.optString(TURNOVER);
+        obj.volume = jsonObject.optString(VOLUME);
+
+        obj.zuiDi = (float) jsonObject.optDouble(ZUIDI);
+        obj.zuiGao = (float) jsonObject.optDouble(ZUIGAO);
+        obj.shiYinLv = (float) jsonObject.optDouble(SHIYINLV);
+        obj.pingJiaShu = (float) jsonObject.optDouble(PINGJIASHU);
+        obj.dieJiaShu = (float) jsonObject.optDouble(DIEJIASHU);
         return obj;
     }
 
@@ -53,6 +98,16 @@ public class StockDo extends JSONResponse {
         bodyjson.putOpt(FLAG, obj.flag);
         bodyjson.putOpt(TIMESTART, obj.timestart);
         bodyjson.putOpt(TIMEEND, obj.timeend);
+        bodyjson.putOpt(LASTTRADE, obj.lastTrade);
+        bodyjson.putOpt(CHG, obj.chg);
+        bodyjson.putOpt(CHANGE, obj.change);
+        bodyjson.putOpt(OPEN, obj.open);
+        bodyjson.putOpt(PREVCLOSE, obj.prevClose);
+        bodyjson.putOpt(AMPLITUDE, obj.amplitude);
+        bodyjson.putOpt(TURNOVER, obj.turnover);
+        bodyjson.putOpt(VOLUME, obj.volume);
+        bodyjson.putOpt(ZUIDI, obj.zuiDi);
+        bodyjson.putOpt(ZUIGAO, obj.zuiGao);
         return bodyjson;
     }
 
@@ -62,6 +117,17 @@ public class StockDo extends JSONResponse {
         flag = stockDo.flag;
         timestart = stockDo.timestart;
         timeend = stockDo.timeend;
+        type = stockDo.type;
+        lastTrade = stockDo.lastTrade;
+        chg = stockDo.chg;
+        change = stockDo.change;
+        open = stockDo.open;
+        prevClose = stockDo.prevClose;
+        amplitude = stockDo.amplitude;
+        turnover = stockDo.turnover;
+        volume = stockDo.volume;
+        zuiDi = stockDo.zuiDi;
+        zuiGao = stockDo.zuiGao;
     }
 
     public static class Entity {

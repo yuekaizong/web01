@@ -87,19 +87,19 @@ public class KDo extends StockDo {
     public String requestDate;
 
     public static JSONObject convertJson(KDo obj) throws Exception {
-        JSONObject json = new JSONObject();
-        json.putOpt(JSONResponse.SUCCESS, obj.success);
-        json.putOpt(JSONResponse.MESSAGE, obj.message);
-        json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
-        json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
+        JSONObject json = JSONResponse.convertJson(obj);
+        // json.putOpt(JSONResponse.SUCCESS, obj.success);
+        // json.putOpt(JSONResponse.MESSAGE, obj.message);
+        // json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
+        // json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
 
-        JSONObject bodyjson = new JSONObject();
+        JSONObject bodyjson = StockDo.convertJson(obj);
         json.putOpt(StockDo.DATA, bodyjson);
 
-        bodyjson.put(StockDo.NAME, obj.name);
-        bodyjson.put(StockDo.SYMBOL, obj.symbol);
-        bodyjson.put(StockDo.TIMESTART, obj.timestart);
-        bodyjson.put(StockDo.TIMEEND, obj.timeend);
+        // bodyjson.put(StockDo.NAME, obj.name);
+        // bodyjson.put(StockDo.SYMBOL, obj.symbol);
+        // bodyjson.put(StockDo.TIMESTART, obj.timestart);
+        // bodyjson.put(StockDo.TIMEEND, obj.timeend);
         bodyjson.put(KDo.TYPE, obj.type);
         bodyjson.put(KDo.FUQUAN, obj.fuquan);
         bodyjson.put(KDo.COUNT, obj.count);

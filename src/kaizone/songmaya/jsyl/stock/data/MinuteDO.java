@@ -15,78 +15,49 @@ public class MinuteDO extends StockDo {
     public static final String ID = "id";
     public static final String TIME = "time";
     public static final String NOW = "now";
-    public static final String CHANGE = "change";
     public static final String AMOUNT = "amount";
     public static final String MEAN = "mean";
     public static final String ISNODE = "isnode";
-    public static final String LASTTRADE = "lastTrade";
-    public static final String CHG = "chg";
-    public static final String OPEN = "open";
-    public static final String PREVCLOSE = "prevClose";
-    public static final String AMPLITUDE = "amplitude";
-    public static final String TURNOVER = "turnover";
-    public static final String VOLUME = "volume";
-    public static final String ZUIDI = "zuiDi";
-    public static final String ZUIGAO = "zuiGao";
-    public static final String SHIYINLV = "shiYinLv";
-    public static final String PINGJIASHU = "pingJiaShu";
-    public static final String DIEJIASHU = "dieJiaShu";
-    public static final String PRICE = "price";
+
     public static final String TYPE = "type";
+    public static final String PRICE = "price";
     public static final String FIELDS = "fields";
 
     public static final int TYPE_TODAY = 0;
     public static final int TYPE_5DAY = 5;
-
-    public int type;
-    public float lastTrade; // 最新
-    public float chg; // 涨跌幅 % Chg
-    public float change; // 涨跌额
-    public float open; // 今开
-    public float prevClose; // 昨收
-    public float amplitude; // 振幅
-    public String turnover; // 成交额
-    public String volume; // 成交量
-    public float zuiDi;
-    public float zuiGao;
-
-    public float shiYinLv;
-    public float pingJiaShu;
-    public float dieJiaShu;
 
     public MEntity[] ms;
     public TradeEntity[] trades;
     public Period period;
 
     public static JSONObject convertJson(MinuteDO obj) throws Exception {
-        JSONObject json = new JSONObject();
-        json.putOpt(JSONResponse.SUCCESS, obj.success);
-        json.putOpt(JSONResponse.MESSAGE, obj.message);
-        json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
-        json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
+        JSONObject json = JSONResponse.convertJson(obj);
+        // json.putOpt(JSONResponse.SUCCESS, obj.success);
+        // json.putOpt(JSONResponse.MESSAGE, obj.message);
+        // json.putOpt(JSONResponse.RESPONSEDATE, obj.responseDate);
+        // json.putOpt(JSONResponse.RESPONSETIME, obj.responseTime);
 
-        JSONObject bodyjson = new JSONObject();
+        JSONObject bodyjson = StockDo.convertJson(obj);
         json.putOpt(StockDo.DATA, bodyjson);
 
-        bodyjson.put(StockDo.NAME, obj.name);
-        bodyjson.put(StockDo.SYMBOL, obj.symbol);
-        bodyjson.put(StockDo.TIMESTART, obj.timestart);
-        bodyjson.put(StockDo.TIMEEND, obj.timeend);
+        bodyjson.putOpt(TYPE, obj.type);
+        // bodyjson.put(StockDo.NAME, obj.name);
+        // bodyjson.put(StockDo.SYMBOL, obj.symbol);
+        // bodyjson.put(StockDo.TIMESTART, obj.timestart);
+        // bodyjson.put(StockDo.TIMEEND, obj.timeend);
+        // bodyjson.putOpt(LASTTRADE, obj.lastTrade);
+        // bodyjson.putOpt(CHG, obj.chg);
+        // bodyjson.putOpt(CHANGE, obj.change);
+        // bodyjson.putOpt(OPEN, obj.open);
+        // bodyjson.putOpt(PREVCLOSE, obj.prevClose);
+        // bodyjson.putOpt(AMPLITUDE, obj.amplitude);
+        // bodyjson.putOpt(TURNOVER, obj.turnover);
+        // bodyjson.putOpt(VOLUME, obj.volume);
+        // bodyjson.putOpt(ZUIDI, obj.zuiDi);
+        // bodyjson.putOpt(ZUIGAO, obj.zuiGao);
 
         JSONObject entityjson = new JSONObject();
         bodyjson.put(StockDo.ATTR, entityjson);
-
-        entityjson.putOpt(TYPE, obj.type);
-        entityjson.putOpt(LASTTRADE, obj.lastTrade);
-        entityjson.putOpt(CHG, obj.chg);
-        entityjson.putOpt(CHANGE, obj.change);
-        entityjson.putOpt(OPEN, obj.open);
-        entityjson.putOpt(PREVCLOSE, obj.prevClose);
-        entityjson.putOpt(AMPLITUDE, obj.amplitude);
-        entityjson.putOpt(TURNOVER, obj.turnover);
-        entityjson.putOpt(VOLUME, obj.volume);
-        entityjson.putOpt(ZUIDI, obj.zuiDi);
-        entityjson.putOpt(ZUIGAO, obj.zuiGao);
 
         MEntity[] ms = obj.ms;
         if (ms != null) {
@@ -130,21 +101,6 @@ public class MinuteDO extends StockDo {
 
                 JSONObject jsonattr = jsondata.optJSONObject(StockDo.ATTR);
                 if (jsonattr != null) {
-                    mdo.type = jsonattr.optInt(TYPE);
-                    mdo.lastTrade = (float) jsonattr.optDouble(LASTTRADE);
-                    mdo.chg = (float) jsonattr.optDouble(CHG);
-                    mdo.change = (float) jsonattr.optDouble(CHANGE);
-                    mdo.open = (float) jsonattr.optDouble(OPEN);
-                    mdo.prevClose = (float) jsonattr.optDouble(PREVCLOSE);
-                    mdo.amplitude = (float) jsonattr.optDouble(AMPLITUDE);
-                    mdo.turnover = jsonattr.optString(TURNOVER);
-                    mdo.volume = jsonattr.optString(VOLUME);
-
-                    mdo.zuiDi = (float) jsonattr.optDouble(ZUIDI);
-                    mdo.zuiGao = (float) jsonattr.optDouble(ZUIGAO);
-                    mdo.shiYinLv = (float) jsonattr.optDouble(SHIYINLV);
-                    mdo.pingJiaShu = (float) jsonattr.optDouble(PINGJIASHU);
-                    mdo.dieJiaShu = (float) jsonattr.optDouble(DIEJIASHU);
 
                     JSONArray mjsonarray = jsonattr.optJSONArray(MEntity.FLAG);
                     if (mjsonarray != null) {
@@ -322,20 +278,20 @@ public class MinuteDO extends StockDo {
         }
         mDo.ms = tmp_m;
         mDo.type = type;
+        mDo.open = tmp_m[0].now;
+        mDo.lastTrade = tmp_m[count - 1].now;
+        mDo.change = tmp_m[count - 1].now - mDo.prevClose;
+        mDo.change = Utils.floatTo(mDo.change, 2);
+        mDo.chg = mDo.change / mDo.prevClose;
+        mDo.chg = Utils.floatTo(mDo.chg, 4);
+        mDo.volume = "" + cj_sum;
+        mDo.turnover = "" + cje_sum;
+        mDo.zuiGao = price_high;
+        mDo.zuiDi = price_low;
+        mDo.amplitude = Utils.floatTo((price_high - price_low)
+        		/ mDo.prevClose, 4);
 
         if (mDo.type != TYPE_5DAY) {
-            mDo.open = tmp_m[0].now;
-            mDo.lastTrade = tmp_m[count - 1].now;
-            mDo.change = tmp_m[count - 1].now - mDo.prevClose;
-            mDo.change = Utils.floatTo(mDo.change, 2);
-            mDo.chg = mDo.change / mDo.prevClose;
-            mDo.chg = Utils.floatTo(mDo.chg, 4);
-            mDo.volume = "" + cj_sum;
-            mDo.turnover = "" + cje_sum;
-            mDo.zuiGao = price_high;
-            mDo.zuiDi = price_low;
-            mDo.amplitude = Utils.floatTo((price_high - price_low)
-                    / mDo.prevClose, 4);
 
             TradeEntity[] trades = new TradeEntity[10];
             for (int i = 0; i < 10; i++) {
