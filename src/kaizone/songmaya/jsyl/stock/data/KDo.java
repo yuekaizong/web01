@@ -196,7 +196,7 @@ public class KDo extends StockDo {
             }
             entityjson.put(MA5, jsonarray);
         }
-        
+
         float[] ma10s = obj.ma10;
         if (ma10s != null) {
             int len = ma10s.length;
@@ -206,7 +206,7 @@ public class KDo extends StockDo {
             }
             entityjson.put(MA10, jsonarray);
         }
-        
+
         float[] ma20s = obj.ma20;
         if (ma20s != null) {
             int len = ma20s.length;
@@ -361,6 +361,7 @@ public class KDo extends StockDo {
         public float gao;
         public float di;
         public float shou;
+        public float prevClose;
         public int amount;
         public boolean isnode;
 
@@ -373,6 +374,7 @@ public class KDo extends StockDo {
             bodyjson.putOpt(SHOU, k.shou);
             bodyjson.putOpt(AMOUNT, k.amount);
             bodyjson.putOpt(ISNODE, k.isnode);
+            bodyjson.putOpt(PREVCLOSE, k.prevClose);
 
             // if (k.macd != null) {
             // bodyjson.putOpt(k.macd.flag, Macd.convertJson(k.macd));
@@ -403,6 +405,7 @@ public class KDo extends StockDo {
                 obj.gao = Float.valueOf(jsonObject.optString(GAO));
                 obj.di = Float.valueOf(jsonObject.optString(DI));
                 obj.shou = Float.valueOf(jsonObject.optString(SHOU));
+                obj.prevClose = Float.valueOf(jsonObject.optString(PREVCLOSE));
                 obj.amount = jsonObject.optInt(AMOUNT);
                 obj.isnode = jsonObject.optBoolean(ISNODE);
                 // JSONObject jsonmacd = jsonObject.getJSONObject(Macd.FLAG);
@@ -630,7 +633,7 @@ public class KDo extends StockDo {
         float tmp_shou = 0;
         String tmp_date = requestDate;
 
-        for (int index = 0; index < count; index++) {
+        for (int index = count - 1; index >= 0; index--) {
             float kai;
             float gao;
             float di;
@@ -644,7 +647,7 @@ public class KDo extends StockDo {
             // float r3 = convert(random.nextInt(range) / 100f);
             // float r4 = convert(random.nextInt(range) / 100f);
 
-            if (index == 0) {
+            if (index == count - 1) {
                 tmp_shou = StockDo.randomRange(low, high);
             }
             float r1 = tmp_shou;
@@ -683,8 +686,6 @@ public class KDo extends StockDo {
                 shou = temp[1];
             }
 
-            tmp_shou = shou;
-
             kai = Utils.floatTo00(kai);
             gao = Utils.floatTo00(gao);
             shou = Utils.floatTo00(shou);
@@ -702,11 +703,13 @@ public class KDo extends StockDo {
             item.gao = gao;
             item.di = di;
             item.shou = shou;
+            item.prevClose = tmp_shou;
             item.time = time;
             item.amount = lian;
             item.isnode = isnode;
 
             tmp_data[index] = item;
+            tmp_shou = shou;
         }
         kDo.type = type;
         kDo.fuquan = fuquan;
