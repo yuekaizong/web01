@@ -627,8 +627,8 @@ public class KDo extends StockDo {
 
         KEntity[] tmp_data = new KEntity[count];
 
-        float low = 10.37f;
-        float high = 18.86f;
+        float low = 835.55f;
+        float high = 6124.04f;
         Random random = new Random();
         float tmp_shou = 0;
         String tmp_date = requestDate;
