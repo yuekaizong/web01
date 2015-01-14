@@ -749,6 +749,7 @@ public class KDo extends StockDo {
         kDo.timestart = tmp_data[count - 1].time;
         kDo.timeend = tmp_data[0].time;
         kDo.count = count;
+        kDo.length = 365;
 
         Date date = new Date();
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");

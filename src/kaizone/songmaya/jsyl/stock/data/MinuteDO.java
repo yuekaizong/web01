@@ -339,6 +339,7 @@ public class MinuteDO extends StockDo {
         mDo.symbol = symbol;
         mDo.success = true;
         mDo.message = "请求成功";
+        mDo.length = 365;
 
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");

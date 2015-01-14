@@ -28,6 +28,7 @@ public class StockDo extends JSONResponse {
     public static final String SHIYINLV = "shiYinLv";
     public static final String PINGJIASHU = "pingJiaShu";
     public static final String DIEJIASHU = "dieJiaShu";
+    public static final String LENGTH = "length";
 
     public String symbol;
     public String name;
@@ -50,6 +51,8 @@ public class StockDo extends JSONResponse {
     public float shiYinLv;
     public float pingJiaShu;
     public float dieJiaShu;
+    
+    public int length;  //data总长度
 
     public static StockDo parseJsonString(String jsonstring) {
         JSONObject jsonObject = null;
@@ -88,6 +91,7 @@ public class StockDo extends JSONResponse {
         obj.shiYinLv = (float) jsonObject.optDouble(SHIYINLV);
         obj.pingJiaShu = (float) jsonObject.optDouble(PINGJIASHU);
         obj.dieJiaShu = (float) jsonObject.optDouble(DIEJIASHU);
+        obj.length = jsonObject.optInt(LENGTH);
         return obj;
     }
 
@@ -108,6 +112,7 @@ public class StockDo extends JSONResponse {
         bodyjson.putOpt(VOLUME, obj.volume);
         bodyjson.putOpt(ZUIDI, obj.zuiDi);
         bodyjson.putOpt(ZUIGAO, obj.zuiGao);
+        bodyjson.putOpt(LENGTH, obj.length);
         return bodyjson;
     }
 
@@ -128,6 +133,7 @@ public class StockDo extends JSONResponse {
         volume = stockDo.volume;
         zuiDi = stockDo.zuiDi;
         zuiGao = stockDo.zuiGao;
+        length = stockDo.length;
     }
 
     public static class Entity {
