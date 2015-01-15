@@ -28,6 +28,7 @@ public class StockDo extends JSONResponse {
     public static final String SHIYINLV = "shiYinLv";
     public static final String PINGJIASHU = "pingJiaShu";
     public static final String DIEJIASHU = "dieJiaShu";
+    public static final String CATEGORY = "category";
     public static final String LENGTH = "length";
 
     public String symbol;
@@ -47,6 +48,8 @@ public class StockDo extends JSONResponse {
     public String volume; // 成交量
     public float zuiDi;
     public float zuiGao;
+    public float category; //类别   股票=0 指数=1
+    
 
     public float shiYinLv;
     public float pingJiaShu;
@@ -91,6 +94,7 @@ public class StockDo extends JSONResponse {
         obj.shiYinLv = (float) jsonObject.optDouble(SHIYINLV);
         obj.pingJiaShu = (float) jsonObject.optDouble(PINGJIASHU);
         obj.dieJiaShu = (float) jsonObject.optDouble(DIEJIASHU);
+        obj.category = jsonObject.optInt(CATEGORY);
         obj.length = jsonObject.optInt(LENGTH);
         return obj;
     }
