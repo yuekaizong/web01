@@ -316,6 +316,7 @@ public class MinuteDO extends StockDo {
             mDo.period = period;
             mDo.timestart = Utils.date2();
             mDo.timeend = Utils.date2();
+            mDo.length = 240;
         } else {
             Period period = new Period();
             String today = Utils.date3();
@@ -333,13 +334,13 @@ public class MinuteDO extends StockDo {
             mDo.period = period;
             mDo.timeend = Utils.date2();
             mDo.timestart = Utils.dateAfter(mDo.timeend, -4);
+            mDo.length = 300;
         }
 
         mDo.name = "星星点点";
         mDo.symbol = symbol;
         mDo.success = true;
         mDo.message = "请求成功";
-        mDo.length = 365;
 
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
