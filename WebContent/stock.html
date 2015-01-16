@@ -16,7 +16,7 @@
 				type = 5;
 			}
 
-			var action = "stock?flag=" + flag + "&type=" + type + "&symbol="
+			var action = "stock?flag=" + flag + "&unit=" + type + "&symbol="
 					+ symbol + "&timestart=" + time_start + "&timeend="
 					+ time_end;
 			searchForm.action = action;
@@ -61,7 +61,7 @@
 					+ "&timestart=" + time_start + "&timeend=" + time_end
 					+ "&macd=" + macd + "&dmi=" + dmi + "&wr=" + wr + "&boll="
 					+ boll + "&kdj=" + kdj + "&obv=" + obv + "&rsi=" + rsi
-					+ "&K=" + k + "&type=" + type + "&fuquan=" + fuquan
+					+ "&K=" + k + "&unit=" + type + "&fuquan=" + fuquan
 					+ "&requestDate=" + requestDate + "&count="
 					+ requestcount;
 
@@ -163,7 +163,7 @@
 			</tr>
 			<tr>
 				<td>请求个数：</td>
-				<td><input type="text" name="kline_request_length"></td>
+				<td><input type="text" name="kline_request_length" value="10"></td>
 			</tr>
 			<tr>
 				<td>K：</td>
