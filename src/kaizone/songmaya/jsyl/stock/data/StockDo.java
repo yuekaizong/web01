@@ -1,7 +1,11 @@
 
 package kaizone.songmaya.jsyl.stock.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
+
+import kaizone.android.b89.util.Utils;
 
 import org.json.JSONObject;
 
@@ -14,7 +18,8 @@ public class StockDo extends JSONResponse {
     public static final String DATA = "data";
     public static final String TIMESTART = "timestart";
     public static final String TIMEEND = "timeend";
-    
+
+    public static final String TYPE = "type";
     public static final String LASTTRADE = "lastTrade";
     public static final String CHANGE = "change";
     public static final String CHG = "chg";
@@ -28,7 +33,7 @@ public class StockDo extends JSONResponse {
     public static final String SHIYINLV = "shiYinLv";
     public static final String PINGJIASHU = "pingJiaShu";
     public static final String DIEJIASHU = "dieJiaShu";
-    public static final String CATEGORY = "category";
+    public static final String UNIT = "unit";
     public static final String LENGTH = "length";
 
     public String symbol;
@@ -36,8 +41,8 @@ public class StockDo extends JSONResponse {
     public String flag;
     public String timestart;
     public String timeend;
-    
-    public int type;
+
+    public int type; // 类别 股票=0 指数=1
     public float lastTrade; // 最新
     public float chg; // 涨跌幅 % Chg
     public float change; // 涨跌额
@@ -48,14 +53,13 @@ public class StockDo extends JSONResponse {
     public String volume; // 成交量
     public float zuiDi;
     public float zuiGao;
-    public float category; //类别   股票=0 指数=1
-    
+    public float unit;
 
     public float shiYinLv;
     public float pingJiaShu;
     public float dieJiaShu;
-    
-    public int length;  //data总长度
+
+    public int length; // data总长度
 
     public static StockDo parseJsonString(String jsonstring) {
         JSONObject jsonObject = null;
@@ -79,7 +83,7 @@ public class StockDo extends JSONResponse {
         obj.flag = jsonObject.optString(FLAG);
         obj.timestart = jsonObject.optString(TIMESTART);
         obj.timeend = jsonObject.optString(TIMEEND);
-        
+
         obj.lastTrade = (float) jsonObject.optDouble(LASTTRADE);
         obj.chg = (float) jsonObject.optDouble(CHG);
         obj.change = (float) jsonObject.optDouble(CHANGE);
@@ -94,7 +98,8 @@ public class StockDo extends JSONResponse {
         obj.shiYinLv = (float) jsonObject.optDouble(SHIYINLV);
         obj.pingJiaShu = (float) jsonObject.optDouble(PINGJIASHU);
         obj.dieJiaShu = (float) jsonObject.optDouble(DIEJIASHU);
-        obj.category = jsonObject.optInt(CATEGORY);
+        obj.unit = jsonObject.optInt(UNIT);
+        obj.type = jsonObject.optInt(TYPE);
         obj.length = jsonObject.optInt(LENGTH);
         return obj;
     }
@@ -116,6 +121,8 @@ public class StockDo extends JSONResponse {
         bodyjson.putOpt(VOLUME, obj.volume);
         bodyjson.putOpt(ZUIDI, obj.zuiDi);
         bodyjson.putOpt(ZUIGAO, obj.zuiGao);
+        bodyjson.putOpt(TYPE, obj.type);
+        bodyjson.putOpt(UNIT, obj.unit);
         bodyjson.putOpt(LENGTH, obj.length);
         return bodyjson;
     }
@@ -127,6 +134,7 @@ public class StockDo extends JSONResponse {
         timestart = stockDo.timestart;
         timeend = stockDo.timeend;
         type = stockDo.type;
+        unit = stockDo.unit;
         lastTrade = stockDo.lastTrade;
         chg = stockDo.chg;
         change = stockDo.change;
@@ -138,6 +146,28 @@ public class StockDo extends JSONResponse {
         zuiDi = stockDo.zuiDi;
         zuiGao = stockDo.zuiGao;
         length = stockDo.length;
+    }
+
+    public void fillStockDo(StockDo stockDo) {
+        symbol = (symbol == null ? stockDo.symbol : symbol);
+        name = (name == null ? stockDo.name : name);
+        flag = (flag == null ? stockDo.flag : flag);
+        timestart = (timestart == null ? stockDo.timestart : timestart);
+        timeend = (timestart == null ? stockDo.timestart : timestart);
+        type = (type == 0 ? stockDo.type : type);
+        unit = (unit == 0 ? stockDo.unit : unit);
+        lastTrade = (lastTrade == 0 ? stockDo.lastTrade : lastTrade);
+        chg = (chg == 0 ? stockDo.chg : chg);
+        change = (change == 0 ? stockDo.change : change);
+        open = (open == 0 ? stockDo.open : open);
+        prevClose = (prevClose == 0 ? stockDo.prevClose : prevClose);
+        amplitude = (amplitude == 0 ? stockDo.amplitude : amplitude);
+        turnover = (turnover == null ? stockDo.turnover : turnover);
+        volume = (volume == null ? stockDo.volume : volume);
+        zuiDi = (zuiDi == 0 ? stockDo.zuiDi : zuiDi);
+        zuiGao = (zuiGao == 0 ? stockDo.zuiGao : zuiGao);
+        length = (length == 0 ? stockDo.length : length);
+        fillJSONResponse(stockDo);
     }
 
     public static class Entity {
@@ -176,6 +206,50 @@ public class StockDo extends JSONResponse {
         float min = Math.min(a, b);
         float zuo = min + v / 100f;
         return zuo;
+    }
+
+    public static StockDo createStockDo(String symbol, int unit, float open, float lastTrade,
+            float prevClose, String volume, String turnover, float high, float low) {
+        StockDo obj = new StockDo();
+        obj.symbol = symbol;
+        obj.type = 0;
+        obj.unit = unit;
+        obj.open = open;
+        obj.lastTrade = lastTrade;
+        obj.prevClose = prevClose;
+        obj.volume = volume;
+        obj.turnover = turnover;
+        obj.zuiGao = high;
+        obj.zuiDi = low;
+        obj.change = obj.lastTrade - obj.prevClose;
+        obj.change = Utils.floatTo(obj.change, 2);
+        obj.chg = obj.change / obj.prevClose;
+        obj.chg = Utils.floatTo(obj.chg, 4);
+        obj.amplitude = Utils.floatTo((obj.zuiGao - obj.zuiDi) / obj.prevClose, 4);
+        obj.success = true;
+        obj.message = "请求成功";
+
+        Date date = new Date();
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
+        obj.responseDate = dateformat.format(date);
+        obj.responseTime = timeformat.format(date);
+
+        //
+        if (symbol.equals("000001")) {
+            obj.name = "上证指数";
+            obj.type = 1;
+        } else if (symbol.equals("399001")) {
+            obj.name = "深证成指";
+            obj.type = 1;
+        } else if (symbol.equals("399006")) {
+            obj.name = "创业板指";
+            obj.type = 1;
+        } else {
+            obj.name = "星星点点";
+            obj.type = 0;
+        }
+        return obj;
     }
 
 }

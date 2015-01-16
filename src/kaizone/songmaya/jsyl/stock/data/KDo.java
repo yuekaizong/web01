@@ -1,8 +1,6 @@
 
 package kaizone.songmaya.jsyl.stock.data;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import kaizone.android.b89.util.Utils;
@@ -61,9 +59,9 @@ public class KDo extends StockDo {
     public static final String COUNT = "count";
     public static final String REQUESTDATE = "requestDate";
 
-    public static final int TYPE_K_DAY = 0;
-    public static final int TYPE_K_WEEK = 5;
-    public static final int TYPE_K_MONTH = 30;
+    public static final int UNIT_K_DAY = 0;
+    public static final int UNIT_K_WEEK = 5;
+    public static final int UNIT_K_MONTH = 30;
 
     public static final int FUQUAN_NO = 0;
     public static final int FUQUAN_BEFORE = 1;
@@ -81,7 +79,6 @@ public class KDo extends StockDo {
     public float[] ma5;
     public float[] ma10;
     public float[] ma20;
-    public int type;
     public int fuquan;
     public int count;
     public String requestDate;
@@ -100,7 +97,7 @@ public class KDo extends StockDo {
         // bodyjson.put(StockDo.SYMBOL, obj.symbol);
         // bodyjson.put(StockDo.TIMESTART, obj.timestart);
         // bodyjson.put(StockDo.TIMEEND, obj.timeend);
-        bodyjson.put(KDo.TYPE, obj.type);
+        // bodyjson.put(KDo.TYPE, obj.type);
         bodyjson.put(KDo.FUQUAN, obj.fuquan);
         bodyjson.put(KDo.COUNT, obj.count);
         bodyjson.put(KDo.REQUESTDATE, obj.requestDate);
@@ -616,7 +613,11 @@ public class KDo extends StockDo {
         }
     }
 
-    public static KDo produce(int type, int fuquan, String symbol,
+//    public static final float low = 835.55f;
+//    public static final float high = 6124.55f;
+    public static final float price = 835.55f;
+    
+    public static KDo produce(int unit, int fuquan, String symbol,
             String timestart, String timeend, String requestDate, int count,
             boolean khas, boolean macdhas, boolean dmihas, boolean wrhas,
             boolean bollhas, boolean kdjhas, boolean obvhas, boolean rsihas) {
@@ -630,7 +631,7 @@ public class KDo extends StockDo {
         float low = 835.55f;
         float high = 6124.04f;
         Random random = new Random();
-        float tmp_shou = 0;
+        float tmp_shou = price;
         String tmp_date = requestDate;
 
         for (int index = count - 1; index >= 0; index--) {
@@ -647,9 +648,9 @@ public class KDo extends StockDo {
             // float r3 = convert(random.nextInt(range) / 100f);
             // float r4 = convert(random.nextInt(range) / 100f);
 
-            if (index == count - 1) {
-                tmp_shou = StockDo.randomRange(low, high);
-            }
+//            if (index == count - 1) {
+//                tmp_shou = StockDo.randomRange(low, high);
+//            }
             float r1 = tmp_shou;
             float r2 = StockDo.randomNextOfScope(tmp_shou, 0.1f);
             float r3 = StockDo.randomNextOfScope(tmp_shou, 0.1f);
@@ -711,7 +712,7 @@ public class KDo extends StockDo {
             tmp_data[index] = item;
             tmp_shou = shou;
         }
-        kDo.type = type;
+        kDo.unit = unit;
         kDo.fuquan = fuquan;
         if (khas) {
             kDo.karray = tmp_data;
@@ -735,30 +736,23 @@ public class KDo extends StockDo {
             kDo.obv = StockMath.computeOBv(tmp_data);
         }
         if (dmihas) {
-        	kDo.dmi = StockMath.testDmi(tmp_data);
+            kDo.dmi = StockMath.testDmi(tmp_data);
         }
-        
+
         // kDo.ma5 = StockMath.testMA(tmp_data, KDo.MA5);
         // kDo.ma10 = StockMath.testMA(tmp_data, KDo.MA10);
         // kDo.ma20 = StockMath.testMA(tmp_data, KDo.MA20);
 
-        kDo.name = "星星点点";
-        kDo.symbol = symbol;
-        kDo.success = true;
-        kDo.message = "请求成功";
-        kDo.timestart = tmp_data[count - 1].time;
-        kDo.timeend = tmp_data[0].time;
-        kDo.count = count;
-        kDo.length = 365;
+        float turnover = tmp_data[0].kai * tmp_data[0].amount;
+        String turnoverStr = "" + turnover;
+        float amount = tmp_data[0].amount;
+        String amountStr = "" + amount;
 
-        Date date = new Date();
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
-        kDo.responseDate = dateformat.format(date);
-        kDo.responseTime = timeformat.format(date);
-
+        StockDo stockobj = StockDo.createStockDo(symbol, unit, tmp_data[0].kai, tmp_data[0].shou,
+                tmp_data[0].prevClose, amountStr,
+                turnoverStr, tmp_data[0].gao, tmp_data[0].di);
+        kDo.fillStockDo(stockobj);
         return kDo;
 
     }
-
 }

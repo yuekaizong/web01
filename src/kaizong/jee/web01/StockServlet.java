@@ -58,12 +58,12 @@ public class StockServlet extends HttpServlet {
         String symbol = req.getParameter(StockDo.SYMBOL);
         String timestart = req.getParameter(StockDo.TIMESTART);
         String timeend = req.getParameter(StockDo.TIMEEND);
-        String typetext = req.getParameter(MinuteDO.TYPE);
-        int type = 0;
-        if (typetext != null) {
-            type = Integer.valueOf(typetext);
+        String unittext = req.getParameter(MinuteDO.UNIT);
+        int unit = 0;
+        if (unittext != null) {
+            unit = Integer.valueOf(unittext);
         }
-        MinuteDO minuteDO = MinuteDO.produce(type, symbol, timestart, timeend);
+        MinuteDO minuteDO = MinuteDO.produce(unit, symbol, timestart, timeend);
         JSONObject jsonObject = null;
         try {
             jsonObject = MinuteDO.convertJson(minuteDO);
@@ -87,10 +87,10 @@ public class StockServlet extends HttpServlet {
         boolean kdjhas = Boolean.valueOf(req.getParameter(Kdj.FLAG));
         boolean obvhas = Boolean.valueOf(req.getParameter(OBv.FLAG));
         boolean rsihas = Boolean.valueOf(req.getParameter(Rsi.FLAG));
-        String typetext = req.getParameter(KDo.TYPE);
-        int type = 0;
-        if (typetext != null) {
-            type = Integer.valueOf(typetext);
+        String unittext = req.getParameter(KDo.UNIT);
+        int unit = 0;
+        if (unittext != null) {
+            unit = Integer.valueOf(unittext);
         }
         String fuquantext = req.getParameter(KDo.FUQUAN);
         int fuquan = 0;
@@ -106,7 +106,7 @@ public class StockServlet extends HttpServlet {
             count = Integer.valueOf(counttext);
         }
 
-        KDo result = KDo.produce(type, fuquan, symbol, timestart, timeend,
+        KDo result = KDo.produce(unit, fuquan, symbol, timestart, timeend,
                 requestDate, count, khas, macdhas, dmihas, wrhas, bollhas,
                 kdjhas, obvhas, rsihas);
         JSONObject jsonObject = null;

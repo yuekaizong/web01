@@ -1,9 +1,6 @@
 
 package kaizone.songmaya.jsyl.stock.data;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import kaizone.android.b89.util.Utils;
 
 import org.json.JSONArray;
@@ -19,12 +16,11 @@ public class MinuteDO extends StockDo {
     public static final String MEAN = "mean";
     public static final String ISNODE = "isnode";
 
-    public static final String TYPE = "type";
     public static final String PRICE = "price";
     public static final String FIELDS = "fields";
 
-    public static final int TYPE_TODAY = 0;
-    public static final int TYPE_5DAY = 5;
+    public static final int UNIT_TODAY = 0;
+    public static final int UNIT_5DAY = 5;
 
     public MEntity[] ms;
     public TradeEntity[] trades;
@@ -40,7 +36,7 @@ public class MinuteDO extends StockDo {
         JSONObject bodyjson = StockDo.convertJson(obj);
         json.putOpt(StockDo.DATA, bodyjson);
 
-        bodyjson.putOpt(TYPE, obj.type);
+        // bodyjson.putOpt(TYPE, obj.type);
         // bodyjson.put(StockDo.NAME, obj.name);
         // bodyjson.put(StockDo.SYMBOL, obj.symbol);
         // bodyjson.put(StockDo.TIMESTART, obj.timestart);
@@ -238,7 +234,7 @@ public class MinuteDO extends StockDo {
         }
     }
 
-    public static MinuteDO produce(int type, String symbol, String timestart,
+    public static MinuteDO produce(int unit, String symbol, String timestart,
             String timeend) {
         int count = 180;
         MinuteDO mDo = new MinuteDO();
@@ -253,7 +249,6 @@ public class MinuteDO extends StockDo {
         float price_low = 0;
         float cj_sum = 0;
         long cje_sum = 0;
-        Date date = new Date();
 
         for (int i = 0; i < count; i++) {
             MEntity m = new MEntity();
@@ -263,7 +258,7 @@ public class MinuteDO extends StockDo {
             }
             m.now = Utils.floatTo(randomNextOfScope(price, 0.05f), 2);
             m.amount = randomNext(10000);
-            m.mean = Utils.floatTo(randomNextOfScope((m.now-0.1f), 0.01f), 2);
+            m.mean = Utils.floatTo(randomNextOfScope((m.now - 0.1f), 0.01f), 2);
             m.change = Utils.floatTo00((float) ((m.now - price) / price));
             tmp_m[i] = m;
 
@@ -276,22 +271,7 @@ public class MinuteDO extends StockDo {
             cj_sum += m.amount;
             cje_sum += (m.now * m.amount);
         }
-        mDo.ms = tmp_m;
-        mDo.type = type;
-        mDo.open = tmp_m[0].now;
-        mDo.lastTrade = tmp_m[count - 1].now;
-        mDo.change = tmp_m[count - 1].now - mDo.prevClose;
-        mDo.change = Utils.floatTo(mDo.change, 2);
-        mDo.chg = mDo.change / mDo.prevClose;
-        mDo.chg = Utils.floatTo(mDo.chg, 4);
-        mDo.volume = "" + cj_sum;
-        mDo.turnover = "" + cje_sum;
-        mDo.zuiGao = price_high;
-        mDo.zuiDi = price_low;
-        mDo.amplitude = Utils.floatTo((price_high - price_low)
-        		/ mDo.prevClose, 4);
-
-        if (mDo.type != TYPE_5DAY) {
+        if (mDo.type != UNIT_5DAY) {
 
             TradeEntity[] trades = new TradeEntity[10];
             for (int i = 0; i < 10; i++) {
@@ -328,24 +308,35 @@ public class MinuteDO extends StockDo {
                     Utils.dateAfter3(today, -1),
                     Utils.dateAfter3(today, 0),
             };
-            
+
             period.type = "date";
-            
+
             mDo.period = period;
             mDo.timeend = Utils.date2();
             mDo.timestart = Utils.dateAfter(mDo.timeend, -4);
             mDo.length = 300;
         }
+        
+        mDo.ms = tmp_m;
+        mDo.unit = unit;
+        mDo.open = tmp_m[0].now;
+        mDo.lastTrade = tmp_m[count - 1].now;
+        mDo.change = tmp_m[count - 1].now - mDo.prevClose;
+        mDo.change = Utils.floatTo(mDo.change, 2);
+        mDo.chg = mDo.change / mDo.prevClose;
+        mDo.chg = Utils.floatTo(mDo.chg, 4);
+        mDo.volume = "" + cj_sum;
+        mDo.turnover = "" + cje_sum;
+        mDo.zuiGao = price_high;
+        mDo.zuiDi = price_low;
+        mDo.amplitude = Utils.floatTo((price_high - price_low)
+                / mDo.prevClose, 4);
 
-        mDo.name = "星星点点";
-        mDo.symbol = symbol;
-        mDo.success = true;
-        mDo.message = "请求成功";
 
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
-        mDo.responseDate = dateformat.format(date);
-        mDo.responseTime = timeformat.format(date);
+        StockDo stockobj = StockDo.createStockDo(symbol, unit, mDo.open, mDo.lastTrade,
+                mDo.prevClose, mDo.volume,
+                mDo.turnover, mDo.zuiGao, mDo.zuiDi);
+        mDo.fillStockDo(stockobj);
 
         return mDo;
     }

@@ -56,6 +56,15 @@ public class JSONResponse {
         responseTime = response.responseTime;
     }
 
+    public void fillJSONResponse(JSONResponse response) {
+        if (response == null)
+            return;
+        success = (success == false ? response.success : success);
+        message = (message == null ? response.message : message);
+        responseDate = (responseDate == null ? response.responseDate : responseDate);
+        responseTime = (responseTime == null ? response.responseTime : responseDate);
+    }
+
     public JSONResponse getJsonResponse() {
         return this;
     }
