@@ -80,12 +80,12 @@ public class Utils {
 		String date = format.format(c.getTime());
 		return date;
 	}
-	
+
 	public static String date3() {
-	    SimpleDateFormat format = new SimpleDateFormat("MM-dd");
-	    Calendar c = Calendar.getInstance();
-	    String date = format.format(c.getTime());
-	    return date;
+		SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+		Calendar c = Calendar.getInstance();
+		String date = format.format(c.getTime());
+		return date;
 	}
 
 	public static String dateHZ() {
@@ -116,22 +116,22 @@ public class Utils {
 		}
 		return afterDateString;
 	}
-	
+
 	public static String dateAfter3(String datestring, int after) {
-	    String afterDateString = "";
-	    Date date = null;
-	    SimpleDateFormat df = new SimpleDateFormat("MM-dd");
-	    try {
-	        date = df.parse(datestring);
-	        Calendar calendar = Calendar.getInstance();
-	        calendar.setTime(date);
-	        calendar.add(Calendar.DAY_OF_MONTH, after);
-	        date = calendar.getTime();
-	        afterDateString = df.format(date);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return afterDateString;
+		String afterDateString = "";
+		Date date = null;
+		SimpleDateFormat df = new SimpleDateFormat("MM-dd");
+		try {
+			date = df.parse(datestring);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(Calendar.DAY_OF_MONTH, after);
+			date = calendar.getTime();
+			afterDateString = df.format(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return afterDateString;
 	}
 
 	public static String dateAfterHZ(String datestring, int after) {
@@ -381,5 +381,26 @@ public class Utils {
 		attach = null;
 		src = null;
 		return temp;
+	}
+
+	public static float[] arraySortAsc(float[] src) {
+		if (src == null)
+			return null;
+		int len = src.length;
+		int i, j, k;
+		for (i = 0; i < len; i++) {
+			k = i;
+			for (j = i + 1; j < len; j++) {
+				if (src[k] > src[j])
+					k = j;
+			}
+			if (i != k) {
+				float tmp;
+				tmp = src[i];
+				src[i] = src[k];
+				src[k] = tmp;
+			}
+		}
+		return src;
 	}
 }

@@ -97,6 +97,64 @@ public class StockMath {
 	}
 
 	public static Boll[] computeBOLL(KEntity[] ks) {
+		if (ks == null)
+			return null;
+		int len = ks.length;
+		float sum_f = 0;
+
+		float mb = 0;
+		float up = 0;
+		float dn = 0;
+		float qian_ma = 0;
+		Boll[] bolls = new Boll[len];
+		int k = 0;
+		for (int i = len - 1; i >= 0; i--) {
+			Boll boll = new Boll();
+			KEntity entity = ks[i];
+			if (k >= 19) {
+				float sum = 0;
+				for (int j = 0; j < 20; j++) {
+					KEntity obj = ks[i + j];
+					sum += obj.shou;
+				}
+				float ma = (sum / 20);
+				sum_f = (entity.shou - ma) * (entity.shou - ma);
+				float md = (float) Math.sqrt((sum_f / 20));
+
+				mb = ma;
+				up = mb + 2 * md;
+				dn = mb - 2 * md;
+
+				boll.mid = Utils.floatTo(qian_ma, 2);
+				boll.upper = Utils.floatTo(up, 2);
+				boll.lowper = Utils.floatTo(dn, 2);
+				qian_ma = mb;
+				bolls[i] = boll;
+			} else {
+				float sum = 0;
+				KEntity obj = ks[i];
+				sum += obj.shou;
+				int n = i + 1;
+				float ma = (sum / n);
+				sum_f = (entity.shou - ma) * (entity.shou - ma);
+				float md = (float) Math.sqrt((sum_f / n));
+
+				mb = ma;
+				up = mb + 2 * md;
+				dn = mb - 2 * md;
+
+				boll.mid = Utils.floatTo(qian_ma, 2);
+				boll.upper = Utils.floatTo(up, 2);
+				boll.lowper = Utils.floatTo(dn, 2);
+				qian_ma = mb;
+				bolls[i] = boll;
+			}
+			k++;
+		}
+		return bolls;
+	}
+
+	public static Boll[] testBOLL(KEntity[] ks) {
 		int len = ks.length;
 		float sum = 0;
 		float sum_f = 0;
@@ -182,7 +240,7 @@ public class StockMath {
 
 		OBv[] obv = new OBv[len];
 		long sum = 0;
-		for (int i = 0; i < len; i++) {
+		for (int i = len - 1; i >= 0; i--) {
 			float scope = 0;
 			String unit = null;
 			;
@@ -327,13 +385,82 @@ public class StockMath {
 		Random random = new Random();
 		for (int i = 0; i < len; i++) {
 			Dmi dmi = new Dmi();
-			dmi.pdi = Utils.floatTo(random.nextInt(100) + random.nextFloat(), 4);
-			dmi.mdi = Utils.floatTo(random.nextInt(100) + random.nextFloat(), 4);
-			dmi.adx = Utils.floatTo(random.nextInt(100) + random.nextFloat(), 4);
-			dmi.adxr = Utils.floatTo(random.nextInt(100) + random.nextFloat(), 4);
+			dmi.pdi = Utils
+					.floatTo(random.nextInt(100) + random.nextFloat(), 4);
+			dmi.mdi = Utils
+					.floatTo(random.nextInt(100) + random.nextFloat(), 4);
+			dmi.adx = Utils
+					.floatTo(random.nextInt(100) + random.nextFloat(), 4);
+			dmi.adxr = Utils.floatTo(random.nextInt(100) + random.nextFloat(),
+					4);
 			dmis[i] = dmi;
 		}
 		return dmis;
+	}
+
+	public static Dmi[] testDmi2(KEntity[] ks) {
+		int n = 14;
+		int len = ks.length;
+		Dmi[] dmis = new Dmi[len];
+		KEntity prevK = ks[len - 1];
+		int k = 0;
+		float prev_adx = 0;
+		for (int i = len - 1; i >= 0; i++) {
+			if (k >= n) {
+				float sum = 0;
+				float h_di_sum = 0;
+				float l_di_sum = 0;
+				float h_dm_sum = 0;
+				float l_dm_sum = 0;
+				float tr_sum = 0;
+				for (int j = 0; j < n; j++) {
+					KEntity obj = ks[i + j];
+					float h_dm = obj.gao - prevK.gao;
+					float l_dm = obj.di - prevK.di;
+
+					float h_l = Math.abs(obj.gao - obj.di);
+					float h_pc = Math.abs(obj.gao - obj.prevClose);
+					float l_pc = Math.abs(obj.di - obj.prevClose);
+					float[] trs = new float[] { h_l, h_pc, l_pc };
+					trs = Utils.arraySortAsc(trs);
+					float tr = trs[trs.length - 1];
+					float h_di = (h_dm - tr) * 100;
+					float l_di = (l_dm - tr) * 100;
+
+					h_di_sum += h_di;
+					l_di_sum += l_di;
+					h_dm_sum += h_dm;
+					l_dm_sum += l_dm;
+					tr_sum += tr;
+				}
+
+				float h_di_n = (h_di_sum / n) / (tr_sum / n) * 100;
+				float l_di_n = (l_di_sum / n) / (tr_sum / n) * 100;
+
+				float di_dif = Math.abs(h_di_n - l_di_n);
+				float di_sum = Math.abs(h_di_n + l_di_n);
+				float dx = (di_dif / di_sum) * 100;
+				float adx = dx;
+				float adxr = (adx + prev_adx) / 2;
+				prev_adx = adx;
+			} else {
+				KEntity obj = ks[i];
+				float h_dm = obj.gao - prevK.gao;
+				float l_dm = obj.di - prevK.di;
+
+				float h_l = Math.abs(obj.gao - obj.di);
+				float h_pc = Math.abs(obj.gao - obj.prevClose);
+				float l_pc = Math.abs(obj.di - obj.prevClose);
+				float[] trs = new float[] { h_l, h_pc, l_pc };
+				trs = Utils.arraySortAsc(trs);
+				float tr = trs[trs.length - 1];
+				float h_di = (h_dm - tr) * 100;
+				float l_di = (l_dm - tr) * 100;
+			}
+
+			k++;
+		}
+		return null;
 	}
 
 	public static float[] testMA(KEntity[] ks, String flagMA) {
