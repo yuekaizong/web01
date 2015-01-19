@@ -232,7 +232,6 @@ public class KDo extends StockDo {
 
                 JSONObject jsonattr = jsondata.optJSONObject(StockDo.ATTR);
                 if (jsonattr != null) {
-                    kdo.type = jsonattr.optInt(TYPE);
                     kdo.fuquan = jsonattr.optInt(FUQUAN);
                     JSONArray kjsonarray = jsonattr.optJSONArray(KEntity.FLAG);
                     if (kjsonarray != null) {
