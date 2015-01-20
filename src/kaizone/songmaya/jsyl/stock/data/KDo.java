@@ -612,10 +612,10 @@ public class KDo extends StockDo {
         }
     }
 
-//    public static final float low = 835.55f;
-//    public static final float high = 6124.55f;
+    // public static final float low = 835.55f;
+    // public static final float high = 6124.55f;
     public static final float price = 835.55f;
-    
+
     public static KDo produce(int unit, int fuquan, String symbol,
             String timestart, String timeend, String requestDate, int count,
             boolean khas, boolean macdhas, boolean dmihas, boolean wrhas,
@@ -647,9 +647,9 @@ public class KDo extends StockDo {
             // float r3 = convert(random.nextInt(range) / 100f);
             // float r4 = convert(random.nextInt(range) / 100f);
 
-//            if (index == count - 1) {
-//                tmp_shou = StockDo.randomRange(low, high);
-//            }
+            // if (index == count - 1) {
+            // tmp_shou = StockDo.randomRange(low, high);
+            // }
             float r1 = tmp_shou;
             float r2 = StockDo.randomNextOfScope(tmp_shou, 0.1f);
             float r3 = StockDo.randomNextOfScope(tmp_shou, 0.1f);
@@ -735,7 +735,7 @@ public class KDo extends StockDo {
             kDo.obv = StockMath.computeOBv(tmp_data);
         }
         if (dmihas) {
-            kDo.dmi = StockMath.testDmi(tmp_data);
+            kDo.dmi = StockMath.computeDmi(tmp_data);
         }
 
         // kDo.ma5 = StockMath.testMA(tmp_data, KDo.MA5);
@@ -746,6 +746,7 @@ public class KDo extends StockDo {
         String turnoverStr = "" + turnover;
         float amount = tmp_data[0].amount;
         String amountStr = "" + amount;
+        kDo.length = 440;
 
         StockDo stockobj = StockDo.createStockDo(symbol, unit, tmp_data[0].kai, tmp_data[0].shou,
                 tmp_data[0].prevClose, amountStr,
