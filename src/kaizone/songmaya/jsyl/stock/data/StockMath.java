@@ -45,6 +45,64 @@ public class StockMath {
         return macds;
     }
 
+    public static Wr[] computeWr(KEntity[] ks) {
+        int len = ks.length;
+        KEntity frist = ks[len - 1];
+        final int n1 = 6;
+        final int n2 = 10;
+
+        float high6 = frist.shou;
+        float high10 = frist.shou;
+        float low6 = frist.shou;
+        float low10 = frist.shou;
+
+        Wr[] wrs = new Wr[len];
+        int k = 0;
+        for (int i = len - 1; i >= 0; i--) {
+            KEntity entity = ks[i];
+
+            high6 = Math.max(high6, entity.shou);
+            low6 = Math.min(low6, entity.shou);
+            high10 = Math.max(high10, entity.shou);
+            low10 = Math.min(low10, entity.shou);
+
+            if (k >= n1 - 1) {
+                high6 = entity.shou;
+                low6 = entity.shou;
+                for (int j = n1 - 1; j >= 0; j--) {
+                    KEntity qian = ks[i + j];
+                    high6 = Math.max(high6, qian.shou);
+                    low6 = Math.min(low6, qian.shou);
+                }
+            }
+
+            if (k >= n2 - 1) {
+                high10 = entity.shou;
+                low10 = entity.shou;
+                for (int j = n2 - 1; j >= 0; j--) {
+                    KEntity qian = ks[i + j];
+                    high10 = Math.max(high10, qian.shou);
+                    low10 = Math.min(low10, qian.shou);
+                }
+            }
+
+            float wr1 = 0;
+            if (high6 != low6) {
+                wr1 = 100 * ((high6 - entity.shou) / (float) (high6 - low6));
+            }
+            float wr2 = 0;
+            if (high10 != low10) {
+                wr2 = 100 * ((high10 - entity.shou) / (float) (high10 - low10));
+            }
+            Wr wr = new Wr();
+            wr.wr1 = wr1;
+            wr.wr2 = wr2;
+            wrs[i] = wr;
+            k++;
+        }
+        return wrs;
+    }
+
     /**
      * WR1一般是6天买卖强弱指标； WR2一般是10天买卖强弱指标。 WR(N) = 100 * [ HIGH(N)-C ] / [
      * HIGH(N)-LOW(N) ] C：当日收盘价 HIGH(N)：N日内的最高价 LOW(n)：N日内的最低价
@@ -52,7 +110,7 @@ public class StockMath {
      * @param ks
      * @return
      */
-    public static Wr[] computeWr(KEntity[] ks) {
+    public static Wr[] testWr(KEntity[] ks) {
         int len = ks.length;
         KEntity frist = ks[0];
         float high6 = frist.shou;
@@ -67,6 +125,8 @@ public class StockMath {
                 high6 = Math.max(high6, entity.shou);
                 low6 = Math.min(low6, entity.shou);
             } else {
+                high6 = entity.shou;
+                low6 = entity.shou;
                 for (int j = 0; j < 6; j++) {
                     int k = i - j;
                     KEntity qian = ks[k];
@@ -79,6 +139,8 @@ public class StockMath {
                 high10 = Math.max(high10, entity.shou);
                 low10 = Math.min(low10, entity.shou);
             } else {
+                high10 = entity.shou;
+                low10 = entity.shou;
                 for (int j = 0; j < 10; j++) {
                     int k = i - j;
                     KEntity qian = ks[k];
@@ -87,8 +149,14 @@ public class StockMath {
                 }
             }
 
-            float wr1 = 100 * ((high6 - entity.shou) / (float) (high6 - low6));
-            float wr2 = 100 * ((high10 - entity.shou) / (float) (high10 - low10));
+            float wr1 = 0;
+            if (high6 != low6) {
+                wr1 = 100 * ((high6 - entity.shou) / (float) (high6 - low6));
+            }
+            float wr2 = 0;
+            if (high10 != low10) {
+                wr2 = 100 * ((high10 - entity.shou) / (float) (high10 - low10));
+            }
             Wr wr = new Wr();
             wr.wr1 = wr1;
             wr.wr2 = wr2;
@@ -189,6 +257,87 @@ public class StockMath {
     }
 
     public static Kdj[] computeKDJ(KEntity[] ks) {
+        int n = 9;
+        int len = ks.length;
+
+        float k = 0;
+        float d = 0;
+        float j = 0;
+
+        float cn = ks[len - 1].shou;
+        float ln = ks[len - 1].di;
+        float hn = ks[len - 1].gao;
+
+        float qian_k = 0;
+        float qian_d = 0;
+
+        Kdj[] kdjs = new Kdj[len];
+        int index = 0;
+        for (int a = len - 1; a >= 0; a--) {
+            KEntity entity = ks[a];
+            if (index >= n - 1) {
+                ln = entity.di;
+                hn = entity.gao;
+                cn = entity.shou;
+                for (int b = n - 1; b >= a; b--) {
+                    KEntity obj = ks[a + b];
+                    ln = Math.min(ln, obj.di);
+                    hn = Math.max(hn, obj.gao);
+                }
+                float rsv = 0;
+                if ((hn - ln) != 0) {
+                    rsv = ((cn - ln) / (hn - ln)) * 100;
+                }
+
+                if (qian_k == 0) {
+                    qian_k = 50;
+                }//
+                if (qian_d == 0) {
+                    qian_d = 50;
+                }
+
+                k = (2 / 3f) * qian_k + (1 / 3f) * rsv;
+                d = (2 / 3f) * qian_d + (1 / 3f) * k;
+                j = (3 * k) - (2 * d);
+
+            } else {
+                cn = entity.shou;
+                ln = Math.min(ln, entity.shou) == 0 ? entity.shou : Math.min(ln,
+                        entity.shou);
+                hn = Math.max(hn, entity.shou);
+
+                float rsv = 0;
+                if ((hn - ln) != 0) {
+                    rsv = ((cn - ln) / (hn - ln)) * 100;
+                }
+
+                if (qian_k == 0) {
+                    qian_k = 50;
+                }//
+                if (qian_d == 0) {
+                    qian_d = 50;
+                }
+
+                k = (2 / 3f) * qian_k + (1 / 3f) * rsv;
+                d = (2 / 3f) * qian_d + (1 / 3f) * k;
+                j = (3 * k) - (2 * d);
+            }
+
+            Kdj obj = new Kdj();
+            obj.k = Utils.floatTo(k, 4);
+            obj.d = Utils.floatTo(d, 4);
+            obj.j = Utils.floatTo(j, 4);
+            kdjs[a] = obj;
+
+            qian_d = d;
+            qian_k = k;
+            index++;
+        }
+
+        return kdjs;
+    }
+
+    public static Kdj[] testKDJ(KEntity[] ks) {
         int len = ks.length;
 
         float cn = 0;
@@ -244,7 +393,6 @@ public class StockMath {
         for (int i = len - 1; i >= 0; i--) {
             float scope = 0;
             String unit = null;
-            ;
             if (i == 0) {
                 sum = 0;
             } else {
@@ -367,19 +515,6 @@ public class StockMath {
             k++;
         }
         return rsis;
-    }
-
-    public static Wr[] testWr(KEntity[] ks) {
-        int len = ks.length;
-        Wr[] wrs = new Wr[len];
-        Random random = new Random();
-        for (int i = 0; i < len; i++) {
-            Wr wr = new Wr();
-            wr.wr1 = Utils.floatTo(random.nextInt(100) + random.nextFloat(), 4);
-            wr.wr2 = Utils.floatTo(random.nextInt(100) + random.nextFloat(), 4);
-            wrs[i] = wr;
-        }
-        return wrs;
     }
 
     public static Dmi[] testDmi(KEntity[] ks) {

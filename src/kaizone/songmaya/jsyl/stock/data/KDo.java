@@ -726,7 +726,7 @@ public class KDo extends StockDo {
             kDo.kdj = StockMath.computeKDJ(tmp_data);
         }
         if (wrhas) {
-            kDo.wr = StockMath.testWr(tmp_data);
+            kDo.wr = StockMath.computeWr(tmp_data);
         }
         if (rsihas) {
             kDo.rsi = StockMath.computeRSI(tmp_data);
