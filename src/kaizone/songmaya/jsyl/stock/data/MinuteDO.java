@@ -240,7 +240,7 @@ public class MinuteDO extends StockDo {
         MinuteDO mDo = new MinuteDO();
 
         float price = 10.37f;
-        mDo.prevClose = price;
+        float prevClose = price;
 
         MEntity[] tmp_m = new MEntity[count];
 
@@ -271,7 +271,7 @@ public class MinuteDO extends StockDo {
             cj_sum += m.amount;
             cje_sum += (m.now * m.amount);
         }
-        if (mDo.type != UNIT_5DAY) {
+        if (mDo.unit != UNIT_5DAY) {
 
             TradeEntity[] trades = new TradeEntity[10];
             for (int i = 0; i < 10; i++) {
@@ -319,23 +319,22 @@ public class MinuteDO extends StockDo {
         
         mDo.ms = tmp_m;
         mDo.unit = unit;
-        mDo.open = tmp_m[0].now;
-        mDo.lastTrade = tmp_m[count - 1].now;
-        mDo.change = tmp_m[count - 1].now - mDo.prevClose;
-        mDo.change = Utils.floatTo(mDo.change, 2);
-        mDo.chg = mDo.change / mDo.prevClose;
-        mDo.chg = Utils.floatTo(mDo.chg, 4);
-        mDo.volume = "" + cj_sum;
-        mDo.turnover = "" + cje_sum;
-        mDo.zuiGao = price_high;
-        mDo.zuiDi = price_low;
-        mDo.amplitude = Utils.floatTo((price_high - price_low)
-                / mDo.prevClose, 4);
+        float open = tmp_m[0].now;
+        float lastTrade = tmp_m[count - 1].now;
+        float change = tmp_m[count - 1].now - prevClose;
+        change = Utils.floatTo(change, 2);
+        float chg = change / prevClose;
+        chg = Utils.floatTo(chg, 4);
+        String volume = "" + cj_sum;
+        String turnover = "" + cje_sum;
+        float zuiGao = price_high;
+        float zuiDi = price_low;
+        float amplitude = Utils.floatTo((price_high - price_low)/ prevClose, 4);
 
 
-        StockDo stockobj = StockDo.createStockDo(symbol, unit, mDo.open, mDo.lastTrade,
-                mDo.prevClose, mDo.volume,
-                mDo.turnover, mDo.zuiGao, mDo.zuiDi);
+        StockDo stockobj = StockDo.createStockDo(symbol, unit, open, lastTrade,
+                prevClose, volume,
+                turnover, zuiGao, zuiDi);
         mDo.fillStockDo(stockobj);
 
         return mDo;

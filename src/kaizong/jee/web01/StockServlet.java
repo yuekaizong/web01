@@ -22,6 +22,7 @@ import kaizone.songmaya.jsyl.stock.data.KDo.OBv;
 import kaizone.songmaya.jsyl.stock.data.KDo.Rsi;
 import kaizone.songmaya.jsyl.stock.data.KDo.Wr;
 import kaizone.songmaya.jsyl.stock.data.MinuteDO;
+import kaizone.songmaya.jsyl.stock.data.PortfolioDo;
 import kaizone.songmaya.jsyl.stock.data.StockDo;
 
 import org.json.JSONObject;
@@ -45,6 +46,8 @@ public class StockServlet extends HttpServlet {
             doKline(req, resp);
         } else if ("config".equals(flag)) {
             doConfig(req, resp);
+        } else if (PortfolioDo.FLAG.equals(flag)) {
+            doPortfolio(req, resp);
         }
     }
 
@@ -132,6 +135,18 @@ public class StockServlet extends HttpServlet {
         JSONObject jsonObject = null;
         try {
             jsonObject = JSONResponse.convertJson(obj);
+            PrintWriter out = resp.getWriter();
+            out.println(jsonObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void doPortfolio(HttpServletRequest req, HttpServletResponse resp) {
+        PortfolioDo result = PortfolioDo.produce();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = PortfolioDo.convertJson(result);
             PrintWriter out = resp.getWriter();
             out.println(jsonObject.toString());
         } catch (Exception e) {
