@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MarketsDo extends StockDo {
+    public static final String FLAG = "marketsDo";
+    
 	public static final String MARKET_INDEX = "marketIndex";
 	public static final String UP_LIST = "upList";
 	public static final String DOWN_LIST = "downList";

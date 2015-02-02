@@ -62,12 +62,13 @@
 					+ "&macd=" + macd + "&dmi=" + dmi + "&wr=" + wr + "&boll="
 					+ boll + "&kdj=" + kdj + "&obv=" + obv + "&rsi=" + rsi
 					+ "&K=" + k + "&unit=" + type + "&fuquan=" + fuquan
-					+ "&requestDate=" + requestDate + "&count="
-					+ requestcount;
+					+ "&requestDate=" + requestDate + "&count=" + requestcount;
 
 			searchForm.action = action;
 		} else {
-			searchForm.action = "stock?flag=config"
+			var flag = searchForm.keyword.value;
+			var action = "stock?flag=" + flag;
+			searchForm.action = action;
 		}
 	}
 
@@ -134,6 +135,7 @@
 		</table>
 		<p>
 			<input type="radio" name="rcond" onclick="showkline()"> K线数据
+
 
 
 
@@ -221,7 +223,7 @@
 		<table id=key style="display: none">
 			<tr>
 				<td>请输入关键字：</td>
-				<td><input type="text" name="keyword"></td>
+				<td><input type="text" name="keyword" value="portfolioDo"></td>
 			</tr>
 		</table>
 		<p>
