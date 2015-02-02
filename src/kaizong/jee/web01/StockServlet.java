@@ -1,4 +1,3 @@
-
 package kaizong.jee.web01;
 
 import java.io.IOException;
@@ -21,6 +20,7 @@ import kaizone.songmaya.jsyl.stock.data.KDo.Macd;
 import kaizone.songmaya.jsyl.stock.data.KDo.OBv;
 import kaizone.songmaya.jsyl.stock.data.KDo.Rsi;
 import kaizone.songmaya.jsyl.stock.data.KDo.Wr;
+import kaizone.songmaya.jsyl.stock.data.MarketsDo;
 import kaizone.songmaya.jsyl.stock.data.MinuteDO;
 import kaizone.songmaya.jsyl.stock.data.PortfolioDo;
 import kaizone.songmaya.jsyl.stock.data.StockDo;
@@ -29,129 +29,142 @@ import org.json.JSONObject;
 
 public class StockServlet extends HttpServlet {
 
-    @Override
-    public void init() throws ServletException {
-        // TODO Auto-generated method stub
-        super.init();
-    }
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        resp.setContentType("text/html; charset=utf-8");
-        String flag = req.getParameter(StockDo.FLAG);
-        if (MinuteDO.FLAG.equals(flag)) {
-            doMinute(req, resp);
-        } else if (KDo.FLAG.equals(flag)) {
-            doKline(req, resp);
-        } else if ("config".equals(flag)) {
-            doConfig(req, resp);
-        } else if (PortfolioDo.FLAG.equals(flag)) {
-            doPortfolio(req, resp);
-        }
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		resp.setContentType("text/html; charset=utf-8");
+		String flag = req.getParameter(StockDo.FLAG);
+		if (MinuteDO.FLAG.equals(flag)) {
+			doMinute(req, resp);
+		} else if (KDo.FLAG.equals(flag)) {
+			doKline(req, resp);
+		} else if ("config".equals(flag)) {
+			doConfig(req, resp);
+		} else if (PortfolioDo.FLAG.equals(flag)) {
+			doPortfolio(req, resp);
+		} else if (MarketsDo.FLAG.equals(flag)) {
+			doMarketsDo(req, resp);
+		}
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        doGet(req, resp);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doGet(req, resp);
+	}
 
-    public void doMinute(HttpServletRequest req, HttpServletResponse resp) {
-        String symbol = req.getParameter(StockDo.SYMBOL);
-        String timestart = req.getParameter(StockDo.TIMESTART);
-        String timeend = req.getParameter(StockDo.TIMEEND);
-        String unittext = req.getParameter(MinuteDO.UNIT);
-        int unit = 0;
-        if (unittext != null) {
-            unit = Integer.valueOf(unittext);
-        }
-        MinuteDO minuteDO = MinuteDO.produce(unit, symbol, timestart, timeend);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = MinuteDO.convertJson(minuteDO);
-            PrintWriter out = resp.getWriter();
-            out.println(jsonObject.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public void doMinute(HttpServletRequest req, HttpServletResponse resp) {
+		String symbol = req.getParameter(StockDo.SYMBOL);
+		String timestart = req.getParameter(StockDo.TIMESTART);
+		String timeend = req.getParameter(StockDo.TIMEEND);
+		String unittext = req.getParameter(MinuteDO.UNIT);
+		int unit = 0;
+		if (unittext != null) {
+			unit = Integer.valueOf(unittext);
+		}
+		MinuteDO minuteDO = MinuteDO.produce(unit, symbol, timestart, timeend);
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = MinuteDO.convertJson(minuteDO);
+			PrintWriter out = resp.getWriter();
+			out.println(jsonObject.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void doKline(HttpServletRequest req, HttpServletResponse resp) {
-        String symbol = req.getParameter(StockDo.SYMBOL);
-        String timestart = req.getParameter(StockDo.TIMESTART);
-        String timeend = req.getParameter(StockDo.TIMEEND);
+	public void doKline(HttpServletRequest req, HttpServletResponse resp) {
+		String symbol = req.getParameter(StockDo.SYMBOL);
+		String timestart = req.getParameter(StockDo.TIMESTART);
+		String timeend = req.getParameter(StockDo.TIMEEND);
 
-        boolean khas = Boolean.valueOf(req.getParameter(KEntity.FLAG));
-        boolean macdhas = Boolean.valueOf(req.getParameter(Macd.FLAG));
-        boolean dmihas = Boolean.valueOf(req.getParameter(Dmi.FLAG));
-        boolean wrhas = Boolean.valueOf(req.getParameter(Wr.FLAG));
-        boolean bollhas = Boolean.valueOf(req.getParameter(Boll.FLAG));
-        boolean kdjhas = Boolean.valueOf(req.getParameter(Kdj.FLAG));
-        boolean obvhas = Boolean.valueOf(req.getParameter(OBv.FLAG));
-        boolean rsihas = Boolean.valueOf(req.getParameter(Rsi.FLAG));
-        String unittext = req.getParameter(KDo.UNIT);
-        int unit = 0;
-        if (unittext != null) {
-            unit = Integer.valueOf(unittext);
-        }
-        String fuquantext = req.getParameter(KDo.FUQUAN);
-        int fuquan = 0;
-        if (fuquantext != null) {
-            fuquan = Integer.valueOf(fuquantext);
-        }
+		boolean khas = Boolean.valueOf(req.getParameter(KEntity.FLAG));
+		boolean macdhas = Boolean.valueOf(req.getParameter(Macd.FLAG));
+		boolean dmihas = Boolean.valueOf(req.getParameter(Dmi.FLAG));
+		boolean wrhas = Boolean.valueOf(req.getParameter(Wr.FLAG));
+		boolean bollhas = Boolean.valueOf(req.getParameter(Boll.FLAG));
+		boolean kdjhas = Boolean.valueOf(req.getParameter(Kdj.FLAG));
+		boolean obvhas = Boolean.valueOf(req.getParameter(OBv.FLAG));
+		boolean rsihas = Boolean.valueOf(req.getParameter(Rsi.FLAG));
+		String unittext = req.getParameter(KDo.UNIT);
+		int unit = 0;
+		if (unittext != null) {
+			unit = Integer.valueOf(unittext);
+		}
+		String fuquantext = req.getParameter(KDo.FUQUAN);
+		int fuquan = 0;
+		if (fuquantext != null) {
+			fuquan = Integer.valueOf(fuquantext);
+		}
 
-        String requestDate = req.getParameter(KDo.REQUESTDATE);
+		String requestDate = req.getParameter(KDo.REQUESTDATE);
 
-        String counttext = req.getParameter(KDo.COUNT);
-        int count = 0;
-        if (fuquantext != null) {
-            count = Integer.valueOf(counttext);
-        }
+		String counttext = req.getParameter(KDo.COUNT);
+		int count = 0;
+		if (fuquantext != null) {
+			count = Integer.valueOf(counttext);
+		}
 
-        KDo result = KDo.produce(unit, fuquan, symbol, timestart, timeend,
-                requestDate, count, khas, macdhas, dmihas, wrhas, bollhas,
-                kdjhas, obvhas, rsihas);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = KDo.convertJson(result);
-            PrintWriter out = resp.getWriter();
-            out.println(jsonObject.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		KDo result = KDo.produce(unit, fuquan, symbol, timestart, timeend,
+				requestDate, count, khas, macdhas, dmihas, wrhas, bollhas,
+				kdjhas, obvhas, rsihas);
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = KDo.convertJson(result);
+			PrintWriter out = resp.getWriter();
+			out.println(jsonObject.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void doConfig(HttpServletRequest req, HttpServletResponse resp) {
-        JSONResponse obj = new JSONResponse();
-        obj.message = "请求成功";
-        obj.success = true;
-        Date date = new Date();
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
-        obj.responseDate = dateformat.format(date);
-        obj.responseTime = timeformat.format(date);
+	public void doConfig(HttpServletRequest req, HttpServletResponse resp) {
+		JSONResponse obj = new JSONResponse();
+		obj.message = "请求成功";
+		obj.success = true;
+		Date date = new Date();
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
+		obj.responseDate = dateformat.format(date);
+		obj.responseTime = timeformat.format(date);
 
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSONResponse.convertJson(obj);
-            PrintWriter out = resp.getWriter();
-            out.println(jsonObject.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = JSONResponse.convertJson(obj);
+			PrintWriter out = resp.getWriter();
+			out.println(jsonObject.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void doPortfolio(HttpServletRequest req, HttpServletResponse resp) {
-        PortfolioDo result = PortfolioDo.produce();
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = PortfolioDo.convertJson(result);
-            PrintWriter out = resp.getWriter();
-            out.println(jsonObject.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public void doPortfolio(HttpServletRequest req, HttpServletResponse resp) {
+		PortfolioDo result = PortfolioDo.produce();
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = PortfolioDo.convertJson(result);
+			PrintWriter out = resp.getWriter();
+			out.println(jsonObject.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void doMarketsDo(HttpServletRequest req, HttpServletResponse resp) {
+		MarketsDo result = MarketsDo.produce();
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = MarketsDo.convertJson(result);
+			PrintWriter out = resp.getWriter();
+			out.println(jsonObject.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
