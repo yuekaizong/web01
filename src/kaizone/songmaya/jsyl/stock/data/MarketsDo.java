@@ -53,7 +53,7 @@ public class MarketsDo extends StockDo {
 			for (int i = 0; i < len; i++) {
 				jsonarray.put(i, StockDo.Info.convertJson(downlist[i]));
 			}
-			entityjson.put(UP_LIST, jsonarray);
+			entityjson.put(DOWN_LIST, jsonarray);
 		}
 		return json;
 	}
@@ -115,7 +115,7 @@ public class MarketsDo extends StockDo {
 			info.symbol = "00000" + i;
 			info.change = Utils
 					.floatTo00((float) ((info.lastTrade - info.prevClose) / info.prevClose));
-			info.chg = Utils.floatTo00(info.change / info.prevClose);
+			info.chg = Utils.floatTo(info.change / info.prevClose, 4);
 
 			list[i] = info;
 		}
