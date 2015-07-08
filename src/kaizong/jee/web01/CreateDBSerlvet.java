@@ -49,7 +49,7 @@ public class CreateDBSerlvet extends HttpServlet {
 			stmt.addBatch("insert into bookinfo values (2, 'jsp深入编程', '李四', '李四出版社', '2004-10-1', 56.00, 20, null)");
 			stmt.addBatch("insert into bookinfo values (3, 'j2EE高级编程', '王五', '王五出版社', '2005-3-1', 78.00, 10, null)");
 			stmt.addBatch("insert into bookinfo values (4, 'xushiwen教你如何玩lol', '许shi文', '王五出版社', '2014-3-1', 89.00, 12, null)");
-			stmt.addBatch("insert into bookinfo values (5, 'lol教程', '许世文', '王五出版社', '2014-10-1',120.00, 12, null)");
+			stmt.addBatch("insert into bookinfo values (5, 'lol教程', '许世文', '王五出版社', '2014-10-1',120.00, 12, 'rockll, rock')");
 			stmt.executeBatch();
 
 			PrintWriter out = resp.getWriter();

@@ -159,8 +159,143 @@
 		<servlet-name>CreateAccountServlet</servlet-name>
 		<url-pattern>/account</url-pattern>
 	</servlet-mapping>
-	
-		<servlet>
+
+	<servlet-mapping>
+		<servlet-name>GetDBInfoServlet</servlet-name>
+		<url-pattern>/getdbinfo</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetDBInfoServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.GetDBInfoServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GetDBInfoServlet2</servlet-name>
+		<url-pattern>/getdbinfo2</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetDBInfoServlet2</servlet-name>
+		<servlet-class>kaizong.jee.web01.GetDBInfoServlet2</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>TradeServlet</servlet-name>
+		<url-pattern>/trade</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>TradeServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.TradeServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LoginChkServlet</servlet-name>
+		<url-pattern>/loginchk</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>LoginChkServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.LoginChkServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GreetServlet</servlet-name>
+		<url-pattern>/greet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GreetServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.GreetServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GreetServlet2</servlet-name>
+		<url-pattern>/greet2</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GreetServlet2</servlet-name>
+		<servlet-class>kaizong.jee.web01.GreetServlet2</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.LogoutServlet</servlet-class>
+	</servlet>
+
+
+	<servlet-mapping>
+		<servlet-name>OnlineUser</servlet-name>
+		<url-pattern>/online</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>OnlineUser</servlet-name>
+		<servlet-class>kaizong.jee.web01.online.OnlineUser</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>HttpErrorHandlerServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.HttpErrorHandlerServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>HttpErrorHandlerServlet</servlet-name>
+		<url-pattern>/HttpErrHandler</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>FileExecptionServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.FileExecptionServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FileExecptionServlet</servlet-name>
+		<url-pattern>/fileexcep</url-pattern>
+	</servlet-mapping>
+
+	<error-page>
+		<error-code>401</error-code>
+		<location>/HttpErrHandler</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/HttpErrHandler</location>
+	</error-page>
+
+	<servlet>
+		<servlet-name>ExceptionHandlerServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.ExceptionHandlerServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ExceptionHandlerServlet</servlet-name>
+		<url-pattern>/ExecHandler</url-pattern>
+	</servlet-mapping>
+
+	<error-page>
+		<exception-type>java.io.FileNotFoundException</exception-type>
+		<location>/ExecHandler</location>
+	</error-page>
+
+	<session-config>
+		<session-timeout>1</session-timeout>
+	</session-config>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/FileNotFound.html</location>
+	</error-page>
+
+	<servlet>
 		<servlet-name>StockServlet</servlet-name>
 		<servlet-class>kaizong.jee.web01.StockServlet</servlet-class>
 	</servlet>

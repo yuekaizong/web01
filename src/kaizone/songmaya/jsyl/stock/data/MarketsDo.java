@@ -104,7 +104,7 @@ public class MarketsDo extends StockDo {
 		obj.success = true;
 		obj.message = "请求成功";
 
-		int count = 3;
+		int count = 10;
 		StockDo.Info[] list = new Info[count];
 		for (int i = 0; i < count; i++) {
 			StockDo.Info info = new Info();

@@ -48,10 +48,10 @@ public class CreateAccountServlet extends HttpServlet {
 			stmt = conn.createStatement();
 
 			System.out.println("hihi");
-			stmt.executeUpdate("drop table if exists account2;");
-			stmt.executeUpdate("create table account2 (userid varchar(10) not null primary key, balance float(6, 2))");
+			stmt.executeUpdate("drop table if exists account;");
+			stmt.executeUpdate("create table account (userid varchar(10) not null primary key, balance float(6, 2))");
 
-			pstmt = conn.prepareStatement("insert account2 values (?, ?)");
+			pstmt = conn.prepareStatement("insert into account values (?, ?)");
 
 			pstmt.setString(1, "甲");
 			pstmt.setFloat(2, 500.00f);
