@@ -1,3 +1,4 @@
+
 package kaizong.jee.web01;
 
 import java.io.IOException;
@@ -15,27 +16,28 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CreateDBSerlvet extends HttpServlet {
 
-	private String url;
+    private String url;
 
-	@Override
-	public void init() throws ServletException {
-		String driverClass = getInitParameter("driverClass");
-		url = getInitParameter("url");
-		System.out.println(url);
-		try {
-			Class.forName(driverClass);
-		} catch (ClassNotFoundException e) {
-			throw new UnavailableException("数据库驱动加载失败！");
-		}
+    @Override
+    public void init() throws ServletException {
+        String driverClass = getInitParameter("driverClass");
+        url = getInitParameter("url");
+        System.out.println(url);
+        try {
+            Class.forName(driverClass);
+        } catch (ClassNotFoundException e) {
+            throw new UnavailableException("数据库驱动加载失败！");
+        }
 
-	}
+    }
 
-	@Override
+    @Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
+		    PrintWriter out = resp.getWriter();
 
 			conn = DriverManager.getConnection(url);
 			stmt = conn.createStatement();
@@ -51,9 +53,18 @@ public class CreateDBSerlvet extends HttpServlet {
 			stmt.addBatch("insert into bookinfo values (4, 'xushiwen教你如何玩lol', '许shi文', '王五出版社', '2014-3-1', 89.00, 12, null)");
 			stmt.addBatch("insert into bookinfo values (5, 'lol教程', '许世文', '王五出版社', '2014-10-1',120.00, 12, 'rockll, rock')");
 			stmt.executeBatch();
+			out.println("create bookinfo success!");
+			
+			stat.executeUpdate("drop table if exists guestbook");
+			stmt.executeUpdate("create table guestbook("
+			        + "gst_id INT AUTO_INCREMENT not null primary key,"
+			        + " gst_user VARCHAR(10) not null,"
+			        + " gst_title VARCHAR(100) not null, gst_content TEXT,"
+			        + " gst_time TIMESTAMP not null,"
+			        + " gst_ip VARCHAR(15) not null);");
+			stmt.executeBatch();
 
-			PrintWriter out = resp.getWriter();
-			out.println("success!");
+			out.println("create guestbook success!");
 			out.close();
 
 		} catch (SQLException e) {
@@ -75,5 +86,4 @@ public class CreateDBSerlvet extends HttpServlet {
 			}
 		}
 	}
-
 }

@@ -17,6 +17,16 @@
 		<param-value>jdbc:sqlite:book.db</param-value>
 	</context-param>
 
+	<servlet>
+		<servlet-name>StockServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.StockServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>StockServlet</servlet-name>
+		<url-pattern>/stock</url-pattern>
+	</servlet-mapping>
+
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>HelloServlet</servlet-name>
@@ -296,13 +306,33 @@
 	</error-page>
 
 	<servlet>
-		<servlet-name>StockServlet</servlet-name>
-		<servlet-class>kaizong.jee.web01.StockServlet</servlet-class>
+		<servlet-name>DBExceptionServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.DBExceptionServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>StockServlet</servlet-name>
-		<url-pattern>/stock</url-pattern>
+		<servlet-name>DBExceptionServlet</servlet-name>
+		<url-pattern>/dbexcep</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ExceptionServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.ExceptionServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ExceptionServlet</servlet-name>
+		<url-pattern>/excep</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ExceptionHandlerServlet2</servlet-name>
+		<servlet-class>kaizong.jee.web01.ExceptionHandlerServlet2</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ExceptionHandlerServlet2</servlet-name>
+		<url-pattern>/ExcepHandler2</url-pattern>
 	</servlet-mapping>
 
 
