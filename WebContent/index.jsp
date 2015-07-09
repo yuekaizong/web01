@@ -24,11 +24,11 @@
 	    DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/bookstore");
 	    Connection conn = ds.getConnection();
 
-	    Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-	            ResultSet.CONCUR_READ_ONLY);
-	    ResultSet rs = stmt.executeQuery("select * from gueskbook order by gst_time desc");
+	    /* Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY); */
+	    Statement stmt = conn.createStatement();
+	    ResultSet rs = stmt.executeQuery("select * from guestbook order by gst_time desc");
 
-	    rs.last();
+/* 	    rs.last(); */
 
 	    int rowCount = rs.getRow();
 	    if (rowCount == 0) {

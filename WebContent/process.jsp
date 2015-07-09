@@ -33,11 +33,11 @@
     Connection conn = ds.getConnection();
 
     PreparedStatement pstmt = conn
-            .prepareStatement("insert into gueskbook(gst_user, gst_title, gst_content, gst_ip) values (?,?,?,?)");
+            .prepareStatement("insert into guestbook(gst_user, gst_title, gst_content, gst_ip) values (?,?,?,?)");
     pstmt.setString(1, name);
-    pstmt.setString(1, title);
-    pstmt.setString(1, content);
-    pstmt.setString(1, fromIP);
+    pstmt.setString(2, title);
+    pstmt.setString(3, content);
+    pstmt.setString(4, fromIP);
 
     pstmt.executeUpdate();
     pstmt.close();
