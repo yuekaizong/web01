@@ -57,10 +57,10 @@ public class CreateDBSerlvet extends HttpServlet {
 			
 			stat.executeUpdate("drop table if exists guestbook");
 			stmt.executeUpdate("create table guestbook("
-			        + "gst_id INT AUTO_INCREMENT not null primary key,"
+			        + "gst_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 			        + " gst_user VARCHAR(10) not null,"
 			        + " gst_title VARCHAR(100) not null, gst_content TEXT,"
-			        + " gst_time TIMESTAMP not null,"
+			        + " gst_time TIMESTAMP not null default (datetime('now', 'localtime')),"
 			        + " gst_ip VARCHAR(15) not null);");
 			stmt.executeBatch();
 

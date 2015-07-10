@@ -7,8 +7,8 @@
 <%@page import="javax.sql.DataSource"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="javax.naming.Context"%>
-<%@ page language="java" contentType="text/html; charset=GB18030"
-	pageEncoding="GB18030"%>
+<%@ page language="java" contentType="text/html; charset=GB2312"
+	pageEncoding="GB2312"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -24,11 +24,47 @@
 	    DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/bookstore");
 	    Connection conn = ds.getConnection();
 
+	    Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+	            ResultSet.CONCUR_READ_ONLY);
+	    /* 	    Statement stmt = conn.createStatement(); */
+	    ResultSet rs = stmt.executeQuery("select * from guestbook order by gst_time desc");
+
+	    /* rs.last(); */
+
+	    while (rs.next()) {
+	        out.println("<hr color=\"blue\" size=\"2\"><br>");
+	        out.println("用户名：" + rs.getString("gst_user"));
+	        out.println("&nbsp; &nbsp;");
+
+	        Timestamp ts = rs.getTimestamp("gst_time");
+	        long lms = ts.getTime();
+	        Date date = new Date(lms);
+	        Time time = new Time(lms);
+
+	        out.println("留言时间：" + date + " " + time);
+	        out.println("&nbsp; &nbsp;");
+	        out.println("用户IP:" + rs.getString("gst_ip") + "<br>");
+	        out.println("主题:" + rs.getString("gst_title") + "<br>");
+	        out.println("内容:" + rs.getString("gst_content"));
+	    }
+	    
+	    rs.close();
+	    stmt.close();
+	    conn.close();
+	    
+	%>
+
+	<%-- 	
+	<%
+	    Context ctx = new InitialContext();
+	    DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/bookstore");
+	    Connection conn = ds.getConnection();
+
 	    /* Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY); */
 	    Statement stmt = conn.createStatement();
 	    ResultSet rs = stmt.executeQuery("select * from guestbook order by gst_time desc");
 
-/* 	    rs.last(); */
+ 	    rs.last();
 
 	    int rowCount = rs.getRow();
 	    if (rowCount == 0) {
@@ -102,7 +138,8 @@
 	    rs.close();
 	    stmt.close();
 	    conn.close();
-	%>
+	%> --%>
+
 
 </body>
 </html>
