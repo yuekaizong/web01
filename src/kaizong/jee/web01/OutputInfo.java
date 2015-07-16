@@ -65,7 +65,7 @@ public class OutputInfo extends HttpServlet {
 			String value = req.getHeader(name);
 			out.println("<tr>");
 			out.println("<td>" + name + "</td>");
-			out.println("<tr>" + value + "</td>");
+			out.println("<td>" + value + "</td>");
 			out.println("</tr>");
 		}
 

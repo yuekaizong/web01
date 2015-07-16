@@ -7,6 +7,8 @@ public class UserBean {
     private int sex;
     private String education;
     private String email;
+    
+    private String password;
 
     public String getName() {
         return name;
@@ -39,5 +41,15 @@ public class UserBean {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
 
 }
