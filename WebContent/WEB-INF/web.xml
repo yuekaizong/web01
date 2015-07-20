@@ -335,5 +335,10 @@
 		<url-pattern>/ExcepHandler2</url-pattern>
 	</servlet-mapping>
 
-
+    <jsp-config>
+        <taglib>
+           <taglib-uri>/mytag</taglib-uri>
+           <taglib-location>/WEB-INF/tlds/MyTaglib.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 </web-app>

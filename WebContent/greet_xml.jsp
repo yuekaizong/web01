@@ -19,7 +19,7 @@
 		</center>
 		<number> <jsp:expression>2+3</jsp:expression> </number>
 		<jsp:scriptlet>String url="stock.html";</jsp:scriptlet>
-		<jsp:include page="%=url%" />
+		<%-- <jsp:include page="%=url%" /> --%>
 		<a href="%=url%">stock</a>
 	</body>
 </jsp:root>
