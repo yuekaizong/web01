@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=GB2312"
-	pageEncoding="GB18030"%>
+	pageEncoding="GB2312"%>
+<%@ taglib uri="/mytag" prefix="my"%>
+<%!int size = 3;%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=GB18030">
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
 <title>欢迎页面</title>
 </head>
 <body>
@@ -18,5 +20,15 @@
 		<%=sb.toString()%>
 	</center>
 
+	<my:Hello />
+
+	<my:greet>
+		<font size=<%=size++%> color=blue> 欢迎访问Kaizone的个人网站 </font>
+		<p>
+	</my:greet>
 </body>
 </html>
+<%
+    if (size > 5)
+        size = 3;
+%>

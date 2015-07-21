@@ -10,20 +10,50 @@
 		<tag-class>kaizong.jee.web01.tag.HelloTag</tag-class>
 		<body-content>empty</body-content>
 	</tag>
-	
+
 	<tag>
-	  <name>max</name>
-	  <tag-class>kaizong.jee.web01.tag.MaxTag</tag-class>
-	  <body-content>empty</body-content>
-	  <attribute>
-	      <name>num1</name>
-	      <required>true</required>
-	      <rtexprvalue>true</rtexprvalue>
-	  </attribute>
-	  <attribute>
-	      <name>num2</name>
-	      <required>true</required>
-	      <rtexprvalue>true</rtexprvalue>
-	  </attribute>
+		<name>max</name>
+		<tag-class>kaizong.jee.web01.tag.MaxTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>num1</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>num2</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<uri>/mytag</uri>
+	<tag>
+		<name>greet</name>
+		<tag-class>kaizong.jee.web01.tag.GreetTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+
+	<tag>
+		<name>switch</name>
+		<tag-class>kaizong.jee.web01.tag.SwitchTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+
+	<tag>
+		<name>case</name>
+		<tag-class>kaizong.jee.web01.tag.CaseTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>cond</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>default</name>
+		<tag-class>kaizong.jee.web01.tag.DefaultTag</tag-class>
+		<body-content>JSP</body-content>
 	</tag>
 </taglib>
