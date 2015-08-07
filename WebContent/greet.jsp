@@ -20,8 +20,6 @@
 		<%=sb.toString()%>
 	</center>
 
-	<my:Hello />
-
 	<my:greet>
 		<font size=<%=size++%> color=blue> 欢迎访问Kaizone的个人网站 </font>
 		<p>

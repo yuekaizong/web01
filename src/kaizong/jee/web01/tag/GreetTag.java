@@ -37,7 +37,7 @@ public class GreetTag extends BodyTagSupport {
     public int doEndTag() throws JspException {
         JspWriter out = bodyContent.getEnclosingWriter();
         try {
-            out.println(bodyContent.toString());
+            out.println(bodyContent.getString());
         } catch (IOException e) {
             System.err.println(e);
         }

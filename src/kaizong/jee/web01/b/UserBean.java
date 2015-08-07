@@ -1,14 +1,26 @@
 
 package kaizong.jee.web01.b;
 
+
 public class UserBean {
 
     private String name;
     private int sex;
     private String education;
     private String email;
-    
+
     private String password;
+    
+    public UserBean() {
+        // TODO Auto-generated constructor stub
+    }
+
+    public UserBean(String name, int sex, String education, String email) {
+        this.name = name;
+        this.sex = sex;
+        this.education = education;
+        this.email = email;
+    }
 
     public String getName() {
         return name;
@@ -49,7 +61,5 @@ public class UserBean {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
 
 }

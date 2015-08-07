@@ -11,13 +11,15 @@
 <title>Insert title here</title>
 </head>
 <body>
+    <my:Hello/><br>
+
 	<my:switch>
-		<my:case cond="<%=name.equals("zhangsan")%>">
+		<my:case cond="<%= \"zhansan\".equals(name)%>">
 			<%
 			    out.println(name + " is manager!");
 			%>
 		</my:case>
-		<my:case cond="<%=name.equals("lisi")%>">
+		<my:case cond="<%= name.equals(\"lisi\")%>">
 			<%
 			    out.println(name + " is salesman!");
 			%>
