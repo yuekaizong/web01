@@ -13,10 +13,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.MDC;
+import org.apache.log4j.NDC;
+import org.apache.log4j.PropertyConfigurator;
+
 public class DBExceptionServlet extends HttpServlet {
+
+    static Logger logger = Logger.getRootLogger();
+    static Logger bookLogger = Logger.getLogger("bookstoreLogger");
 
     @Override
     public void init() throws ServletException {
+        String prefix = getServletContext().getRealPath("/");
+        String file = getInitParameter("log4j-init-file");
+        if (file != null) {
+            PropertyConfigurator.configure(prefix + file);
+        }
+
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -34,6 +48,20 @@ public class DBExceptionServlet extends HttpServlet {
             stmt = conn.createStatement();
             stmt.executeUpdate("delete from jobs where job_id=13");
         } catch (SQLException se) {
+            NDC.push(req.getRemoteHost());
+//            MDC.put("RemoteAddress", req.getRemoteHost());
+            
+            logger.warn("数据库操作失败！" + se);
+            logger.error("数据库操作失败！" + se);
+
+            bookLogger.error("数据库操作失败！" + se);
+            bookLogger.warn("数据库操作失败！" + se);
+//            MDC.get("RemoteAddress");
+//            MDC.remove("RemoteAddress");
+            
+            NDC.pop();
+            NDC.remove();
+
             getServletContext().log("ServletContext.log():数据库操作失败！" + se.toString());
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "数据库操作出现问题，请联系管理员");
         } finally {
@@ -42,6 +70,7 @@ public class DBExceptionServlet extends HttpServlet {
                     stmt.close();
                 } catch (SQLException se) {
                     log("关闭Statement失败!", se);
+                    bookLogger.error("关闭Statement失败！", se);
                 }
                 stmt = null;
             }
@@ -50,6 +79,7 @@ public class DBExceptionServlet extends HttpServlet {
                     conn.close();
                 } catch (SQLException se) {
                     log("关闭conn失败!", se);
+                    bookLogger.error("关闭数据库连接失败！", se);
                 }
                 conn = null;
             }

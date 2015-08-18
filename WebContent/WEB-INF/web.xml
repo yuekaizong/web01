@@ -308,6 +308,10 @@
 	<servlet>
 		<servlet-name>DBExceptionServlet</servlet-name>
 		<servlet-class>kaizong.jee.web01.DBExceptionServlet</servlet-class>
+		<init-param>
+			<param-name>log4j-init-file</param-name>
+			<param-value>WEB-INF/log4j.properties</param-value>
+		</init-param>
 	</servlet>
 
 	<servlet-mapping>
@@ -335,10 +339,46 @@
 		<url-pattern>/ExcepHandler2</url-pattern>
 	</servlet-mapping>
 
-    <jsp-config>
-        <taglib>
-           <taglib-uri>/mytag</taglib-uri>
-           <taglib-location>/WEB-INF/tlds/MyTaglib.tld</taglib-location>
-        </taglib>
-    </jsp-config>
+	<servlet>
+		<servlet-name>Log4jInit</servlet-name>
+		<servlet-class>kaizong.jee.web01.Log4jInit</servlet-class>
+
+		<init-param>
+			<param-name>log4j-init-file</param-name>
+			<param-value>WEB-INF/log4j.lcf</param-value>
+		</init-param>
+
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>/mytag</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/MyTaglib.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
+	<filter>
+		<filter-name>GuestbookFilter</filter-name>
+		<filter-class>kaizong.jee.web01.filter.GuestbookFilter</filter-class>
+		<init-param>
+			<param-name>word_file</param-name>
+			<param-value>/WEB-INF/word.txt</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>GuestbookFilter</filter-name>
+		<url-pattern>/process.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>SimpleFilter</filter-name>
+		<filter-class>kaizong.jee.web01.filter.SimpleFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SimpleFilter</filter-name>
+		<url-pattern>/test.jsp</url-pattern>
+	</filter-mapping>
+
 </web-app>

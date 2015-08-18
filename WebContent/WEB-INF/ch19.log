@@ -1,0 +1,22 @@
+2015-08-18 16:44:56 [] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: no such table: jobs
+
+2015-08-18 16:52:34 [0:0:0:0:0:0:0:1] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
+2015-08-18 16:56:05 [192.168.220.33] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
+2015-08-18 16:56:50 [192.168.220.34] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
+2015-08-18 17:00:21 [192.168.220.32] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
+2015-08-18 17:00:33 [192.168.220.32] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
+2015-08-18 17:01:53 [192.168.220.41] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
+2015-08-18 17:57:01 [] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
+2015-08-18 18:01:32 192.168.220.33 [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: no such table: jobs
+
+2015-08-18 18:02:03 192.168.220.33 [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: no such table: jobs
+
+2015-08-18 18:04:15 [192.168.220.33] [bookstoreLogger]-[ERROR]数据库操作失败！java.sql.SQLException: [SQLITE_ERROR] SQL error or missing database ()
+
