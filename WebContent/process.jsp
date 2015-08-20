@@ -5,7 +5,7 @@
 <%@page import="javax.naming.Context"%>
 <%@ page language="java" contentType="text/html; charset=GB2312"
 	pageEncoding="GB2312"%>
-<%@ include file="util.jsp"%>
+<%-- <%@ include file="util.jsp"%> --%>
 <%
     request.setCharacterEncoding("gb2312");
 
@@ -18,14 +18,14 @@
         return;
     }
 
-    name = toHtml(name.trim());
-    title = toHtml(title.trim());
+    //name = toHtml(name.trim());
+    //title = toHtml(title.trim());
     if (name.equals("") || title.equals("")) {
         response.sendRedirect("say.html");
         return;
     }
 
-    content = toHtml(content.trim());
+    //content = toHtml(content.trim());
     String fromIP = request.getRemoteAddr();
 
     Context ctx = new InitialContext();
