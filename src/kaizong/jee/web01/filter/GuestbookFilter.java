@@ -65,10 +65,11 @@ public class GuestbookFilter implements Filter {
         PrintWriter out = httpResp.getWriter();
         out.println(result);
         out.close();
+        // chain.doFilter(request, response);
     }
 
     public String replaceText(String content) throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer(content);
         Set keys = hm.keySet();
         Iterator it = keys.iterator();
         while (it.hasNext()) {

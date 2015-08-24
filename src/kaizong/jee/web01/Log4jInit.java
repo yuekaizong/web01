@@ -14,7 +14,7 @@ public class Log4jInit extends HttpServlet {
         String file = getInitParameter("log4j-init-file");
 
         if (file != null) {
-            PropertyConfigurator.configure(prefix + file);
+//            PropertyConfigurator.configure(prefix + file);
         }
     }
 

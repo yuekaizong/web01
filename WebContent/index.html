@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>测试</title>
+<script type="text/javascript">
+<!--
+	function fsubmit() {
+		if (theForm.page[0].checked) {
+			theForm.action = "test.jsp"
+		} else if (theForm.page[1].checked) {
+			theForm.action = "test"
+		}
+	}
+	-->
+</script>
+</head>
+<body>
+	这是HTML页面测试
+	<form action="" name="theForm" method="post" onclick="fsubmit()">
+		<input type="radio" name="page">JSP页面
+		<p>
+			<input type="radio" name="page">Servlet页面
+		<p>
+			请输入测试内容:<input type="text" name="content">
+		<p>
+			<input type="submit" value="提交">
+	</form>
+</body>
+</html>

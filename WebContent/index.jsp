@@ -12,7 +12,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=GB18030">
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
 <title>网上书店留言板</title>
 </head>
 <body>
@@ -32,6 +32,7 @@
 	    /* rs.last(); */
 
 	    while (rs.next()) {
+
 	        out.println("<hr color=\"blue\" size=\"2\"><br>");
 	        out.println("用户名：" + rs.getString("gst_user"));
 	        out.println("&nbsp; &nbsp;");
@@ -46,12 +47,13 @@
 	        out.println("用户IP:" + rs.getString("gst_ip") + "<br>");
 	        out.println("主题:" + rs.getString("gst_title") + "<br>");
 	        out.println("内容:" + rs.getString("gst_content"));
+
 	    }
-	    
+
+	    out.flush();
 	    rs.close();
 	    stmt.close();
 	    conn.close();
-	    
 	%>
 
 	<%-- 	

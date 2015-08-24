@@ -404,6 +404,45 @@
       <dispatcher>REQUEST</dispatcher>
       <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
+    
+    <servlet>
+      <servlet-name>TestServlet</servlet-name>
+      <servlet-class>kaizong.jee.web01.TestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>TestServlet</servlet-name>
+      <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+      <filter-name>SetCharacterEncodingFilter</filter-name>
+      <filter-class>kaizong.jee.web01.filter.SetCharacterEncodingFilter</filter-class>
+      <init-param>
+         <param-name>encoding</param-name>
+         <param-value>GBK</param-value>
+      </init-param>
+      <init-param>
+         <param-name>ignore</param-name>
+         <param-value>true</param-value>
+      </init-param>
+    </filter>
+    <filter-mapping>
+      <filter-name>SetCharacterEncodingFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+      <filter-name>SetLocaleFilter</filter-name>
+      <filter-class>kaizong.jee.web01.filter.SetLocaleFilter</filter-class>
+      <init-param>
+        <param-name>resourceName</param-name>
+        <param-value>MyResource</param-value>
+      </init-param>
+    </filter>
+    <filter-mapping>
+      <filter-name>SetLocaleFilter</filter-name>
+      <url-pattern>/form.jsp</url-pattern>
+    </filter-mapping>
 </web-app>
 
 
