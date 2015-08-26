@@ -456,6 +456,15 @@
 		<servlet-name>DownloadServlet</servlet-name>
 		<url-pattern>/download.jsp</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ImageHandlerServlet</servlet-name>
+		<servlet-class>kaizong.jee.web01.ImageHandlerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImageHandlerServlet</servlet-name>
+		<url-pattern>/imghandler</url-pattern>
+	</servlet-mapping>
 </web-app>
 
 

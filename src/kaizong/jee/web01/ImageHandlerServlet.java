@@ -70,7 +70,7 @@ public class ImageHandlerServlet extends HttpServlet {
                 // 得到Graphics对象，用于在BUfferedImage对象上绘图和输出文字
                 Graphics g = buffImg.getGraphics();
                 // 创建ImageIcon对象，logo.gif作为水印图片
-                ImageIcon imgIcon = new ImageIcon("");
+                ImageIcon imgIcon = new ImageIcon("D:/develop/tools/extools/eclipse/spring-tool-suite/workspace/Web01/WebContent/icon.jpg");
                 // 得到Image对象
                 Image img = imgIcon.getImage();
                 // 将水印绘制到图片上
