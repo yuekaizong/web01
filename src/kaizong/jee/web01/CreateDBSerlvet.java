@@ -70,6 +70,11 @@ public class CreateDBSerlvet extends HttpServlet {
             stmt.executeBatch();
             out.println("create logs success");
 
+            stmt.executeUpdate("drop table if exists uploadfile");
+            stmt.executeUpdate("create table uploadfile(id INTEGER PRIMARY KEY AUTOINCREMENT, filename VARCHAR(255) not null, filesize INT not null, data BLOB not null);"); //MEDIUMBLOB
+            stmt.executeBatch();
+            out.println("create uploadfile success!");
+            
             out.close();
 
         } catch (SQLException e) {

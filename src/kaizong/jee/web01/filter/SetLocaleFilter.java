@@ -36,7 +36,7 @@ public class SetLocaleFilter implements Filter {
         String clientLang = httpReq.getHeader("Accept-Language");
         Locale locale = null;
         ResourceBundle bundle = null;
-        if (clientLang.indexOf("zh-cn") != -1) {
+        if (clientLang.contains("zh-cn")) {
             locale = new Locale("zh", "CN");
             bundle = ResourceBundle.getBundle(resourceName, locale);
             response.setContentType("text/html;charset=GBK");

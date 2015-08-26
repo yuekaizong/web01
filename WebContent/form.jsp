@@ -1,6 +1,6 @@
 <%@page import="java.util.ResourceBundle"%>
 <%
-    ResourceBundle bundle ==(ResourceBundle)session.getAttribute("resource");
+    ResourceBundle bundle = (ResourceBundle) session.getAttribute("resource");
 %>
 <html>
 <head>

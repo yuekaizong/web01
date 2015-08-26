@@ -86,7 +86,7 @@ public class GetDBInfoServlet extends HttpServlet {
                 for (int i = 1; i <= columnCount; i++) {
                     out.println("<tr>");
                     String columnName = rsMeta.getColumnName(i);
-                    out.println("<td>" + columnCount + "</td>");
+                    out.println("<td>" + columnName + "</td>");
                     al.add(columnName);
                     out.println("<td>" + rsMeta.getColumnTypeName(i) + "</td>");
                     out.println("<td>" + rsMeta.getColumnDisplaySize(i) + "</td>");
