@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -59,8 +60,11 @@ public class ImageHandlerServlet extends HttpServlet {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 File file = new File(rs.getString("data"));
-                if (!file.exists())
+                if (!file.exists()){
+                    RequestDispatcher rd = request.getRequestDispatcher("upload2.html");
+                    rd.forward(request, response);
                     return;
+                }
                 InputStream is = new FileInputStream(file);
 
                 // 通过JPEG图像数据输入流创建JPEG数据流解码器
