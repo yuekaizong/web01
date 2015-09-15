@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import javax.swing.ImageIcon;
 
+import kaizone.songmaya.jsyl.util.PicZoom;
+
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -34,12 +36,15 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 public class ImageHandlerServlet extends HttpServlet {
 
     private DataSource ds = null;
+    private String imgPath;
 
     @Override
     public void init() throws ServletException {
         try {
             Context ctx = new InitialContext();
             ds = (DataSource) ctx.lookup("java:comp/env/jdbc/bookstore");
+            imgPath = getServletContext().getRealPath("icon.jpg");
+            log(imgPath);
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -52,15 +57,21 @@ public class ImageHandlerServlet extends HttpServlet {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        String idStr = request.getParameter("id");
+        String zoomStr = request.getParameter("zoom");
+        int id = 1;
+        if (idStr != null) {
+            id = Integer.valueOf(idStr);
+        }
 
         try {
             conn = ds.getConnection();
             pstmt = conn.prepareStatement("select data from uploadfile where id = ?");
-            pstmt.setInt(1, 1);
+            pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 File file = new File(rs.getString("data"));
-                if (!file.exists()){
+                if (!file.exists()) {
                     RequestDispatcher rd = request.getRequestDispatcher("upload2.html");
                     rd.forward(request, response);
                     return;
@@ -74,11 +85,11 @@ public class ImageHandlerServlet extends HttpServlet {
                 // 得到Graphics对象，用于在BUfferedImage对象上绘图和输出文字
                 Graphics g = buffImg.getGraphics();
                 // 创建ImageIcon对象，logo.gif作为水印图片
-                ImageIcon imgIcon = new ImageIcon("D:/develop/tools/extools/eclipse/spring-tool-suite/workspace/Web01/WebContent/icon.jpg");
+                ImageIcon imgIcon = new ImageIcon(imgPath);
                 // 得到Image对象
                 Image img = imgIcon.getImage();
                 // 将水印绘制到图片上
-                g.drawImage(img, 80, 80, null);
+                g.drawImage(img, 40, 40, null);
                 // 设置图形上下文的当前颜色为红色
                 g.setColor(Color.RED);
                 // 创建新地铁字体
@@ -92,6 +103,11 @@ public class ImageHandlerServlet extends HttpServlet {
 
                 response.setContentType("image/jpeg");
                 ServletOutputStream sos = response.getOutputStream();
+
+                if (zoomStr != null) {
+                    int zoom = Integer.parseInt(zoomStr);
+                    buffImg = PicZoom.zoom(file.getAbsolutePath(), zoom, zoom);
+                }
                 // 创建JPEG图像编码器，用于编码内存中的图像数据到JPEG数据输出流
                 JPEGImageEncoder jpgEncoder = JPEGCodec.createJPEGEncoder(sos);
                 // 编码BUfferedImage对象到JPEG数据输出流.

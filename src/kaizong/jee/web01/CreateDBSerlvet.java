@@ -63,18 +63,33 @@ public class CreateDBSerlvet extends HttpServlet {
                     + " gst_time TIMESTAMP not null default (datetime('now', 'localtime')),"
                     + " gst_ip VARCHAR(15) not null);");
             stmt.executeBatch();
-            out.println("create guestbook success!");
+            out.println("create guestbook success!<br>");
 
             stmt.executeUpdate("drop table if exists logs");
             stmt.executeUpdate("create table logs(log_date DATATIME not null, log_logger VARCHAR(20) not null, log_level VARCHAR(5) not null, log_msg VARCHAR(200) not null);");
             stmt.executeBatch();
-            out.println("create logs success");
+            out.println("create logs success!<br>");
 
             stmt.executeUpdate("drop table if exists uploadfile");
             stmt.executeUpdate("create table uploadfile(id INTEGER PRIMARY KEY AUTOINCREMENT, filename VARCHAR(255) not null, filesize INT not null, data BLOB not null);"); //MEDIUMBLOB
             stmt.executeBatch();
-            out.println("create uploadfile success!");
+            out.println("create uploadfile success!<br>");
             
+           stmt.executeUpdate("drop table if exists users");
+           stmt.executeUpdate("create table users(username varchar(15) not null primary key,password varchar(15) not null)");
+           stmt.executeBatch();
+           out.println("create users success! <br>");
+           
+           stmt.executeUpdate("drop table if exists roles");
+           stmt.executeUpdate("create table roles(username varchar(15) not null, rolename varchar(15) not null, primary key (username, rolename))");
+           
+           stmt.addBatch("insert into users values('wangwu', '1234')");
+           stmt.addBatch("insert into users values('zhaoliu', '1234')"); 
+           stmt.addBatch("insert into roles values('wangwu', 'sales')");
+           stmt.addBatch("insert into roles values('zhaoliu', 'market')");
+           out.println("create roles success!<br>");
+            
+           
             out.close();
 
         } catch (SQLException e) {
